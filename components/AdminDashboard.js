@@ -45,7 +45,7 @@ export default function AdminDashboard() {
   if (!user || user.role !== "manager") {
     return (
       <div className="empty">
-        <p className="empty-title">Restricted area 🔒</p>
+        <p className="empty-title">Restricted area</p>
         <p className="muted">
           {user
             ? `You are logged in as ${user.email}, which is a customer account.`

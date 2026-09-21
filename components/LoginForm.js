@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthContext";
+import { CardIcon, PackageIcon, ZapIcon } from "@/components/icons";
 
 export default function LoginForm() {
   const { user, loaded, loginCustomer } = useAuth();
@@ -54,17 +55,26 @@ export default function LoginForm() {
           <span className="brand-mark">K</span>
           <span className="brand-name">KamGeorge</span>
         </div>
-        <h2>Welcome back 👋</h2>
+        <h2>Welcome back</h2>
         <p>Log in for faster checkout and full order tracking.</p>
         <ul className="auth-points">
           <li>
-            <span>⚡</span> Express checkout with saved details
+            <span>
+              <ZapIcon size={20} />
+            </span>
+            Express checkout with saved details
           </li>
           <li>
-            <span>📦</span> Track every purchase in one place
+            <span>
+              <PackageIcon size={20} />
+            </span>
+            Track every purchase in one place
           </li>
           <li>
-            <span>💳</span> Mobile Money &amp; card ready
+            <span>
+              <CardIcon size={20} />
+            </span>
+            Mobile Money &amp; card ready
           </li>
         </ul>
       </div>

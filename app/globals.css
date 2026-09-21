@@ -1830,3 +1830,47 @@ body {
     padding: 12px 18px;
   }
 }
+
+/* ---------- SVG icon refinements ---------- */
+.hero-card {
+  color: var(--primary);
+}
+
+.perk-icon {
+  color: var(--primary);
+  display: inline-flex;
+}
+
+.empty-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: #e7f6ee;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chat-input button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-points li span {
+  display: inline-flex;
+  flex-shrink: 0;
+}

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthContext";
+import { PackageIcon, ReturnsIcon, ZapIcon } from "@/components/icons";
 
 export default function RegisterForm() {
   const { user, loaded, register } = useAuth();
@@ -55,17 +56,26 @@ export default function RegisterForm() {
           <span className="brand-mark">K</span>
           <span className="brand-name">KamGeorge</span>
         </div>
-        <h2>Join KamGeorge 🛍️</h2>
+        <h2>Join KamGeorge</h2>
         <p>Create a free account in seconds — no fees, ever.</p>
         <ul className="auth-points">
           <li>
-            <span>⚡</span> Faster checkout with saved details
+            <span>
+              <ZapIcon size={20} />
+            </span>
+            Faster checkout with saved details
           </li>
           <li>
-            <span>📦</span> Full purchase history &amp; tracking
+            <span>
+              <PackageIcon size={20} />
+            </span>
+            Full purchase history &amp; tracking
           </li>
           <li>
-            <span>↩️</span> Smoother returns &amp; support
+            <span>
+              <ReturnsIcon size={20} />
+            </span>
+            Smoother returns &amp; support
           </li>
         </ul>
       </div>

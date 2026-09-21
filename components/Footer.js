@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LockIcon } from "@/components/icons";
 
 export default function Footer() {
   return (
@@ -41,7 +42,7 @@ export default function Footer() {
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} KamGeorge. All rights reserved.</span>
         <Link href="/admin/login" className="footer-admin">
-          🔒 Store manager
+          <LockIcon size={13} /> Store manager
         </Link>
       </div>
     </footer>

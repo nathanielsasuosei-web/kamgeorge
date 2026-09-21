@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@/components/AuthContext";
 import { useCart } from "@/components/CartContext";
 import { useProducts } from "@/components/ProductsContext";
+import { ChatIcon, SendIcon, XIcon } from "@/components/icons";
 import { formatPrice } from "@/lib/products";
 import { SUGGESTIONS, getAssistantReply } from "@/lib/assistant";
 
@@ -16,7 +17,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState([
     {
       from: "bot",
-      text: "Hi there! 👋 I'm Little George, your KamGeorge shopping assistant.\nAsk me about products, prices, delivery, payments or tracking your order!",
+      text: "Hi there! I'm Little George, your KamGeorge shopping assistant.\nAsk me about products, prices, delivery, payments or tracking your order!",
     },
   ]);
   const [input, setInput] = useState("");
@@ -47,7 +48,7 @@ export default function ChatWidget() {
       ...prev,
       {
         from: "bot",
-        text: `Added “${product.name}” to your cart! 🛒`,
+        text: `Added “${product.name}” to your cart!`,
         links: [{ label: "View cart", href: "/cart" }],
       },
     ]);
@@ -74,7 +75,7 @@ export default function ChatWidget() {
               onClick={() => setOpen(false)}
               aria-label="Close chat"
             >
-              ✕
+              <XIcon size={14} />
             </button>
           </div>
 
@@ -177,7 +178,7 @@ export default function ChatWidget() {
               aria-label="Send message"
               disabled={typing || !input.trim()}
             >
-              ➤
+              <SendIcon size={18} />
             </button>
           </form>
         </div>
@@ -187,7 +188,15 @@ export default function ChatWidget() {
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Chat with Little George"}
       >
-        {open ? "✕ Close" : "💬 Little George"}
+        {open ? (
+          <>
+            <XIcon size={18} /> Close
+          </>
+        ) : (
+          <>
+            <ChatIcon size={18} /> Little George
+          </>
+        )}
       </button>
     </>
   );

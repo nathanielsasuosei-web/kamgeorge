@@ -45,7 +45,7 @@ export default function ManagerLoginForm() {
   return (
     <div className="auth-wrap">
       <form className="checkout-form auth-card" onSubmit={submit}>
-        <h3>🔒 Store manager</h3>
+        <h3>Store manager</h3>
         <p className="muted">Restricted area. Store managers only.</p>
         {user && user.role === "customer" && (
           <p className="form-error">

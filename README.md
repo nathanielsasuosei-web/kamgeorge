@@ -1,4 +1,4 @@
-# KamGeorge 🛍️
+# KamGeorge
 
 An e-commerce storefront built with **Next.js 14** (App Router) — deployed on **Vercel**.
 
@@ -8,7 +8,7 @@ An e-commerce storefront built with **Next.js 14** (App Router) — deployed on 
 - Product detail pages (statically generated)
 - Cart with quantity controls, persisted to `localStorage`
 - Customer accounts: modern register/login, My account with purchase history
-- Little George 🤖 — built-in chat assistant answering product, delivery, payment & order questions
+- Little George — built-in chat assistant answering product, delivery, payment & order questions
 - Checkout flow with delivery form & order confirmation
 - Login-gated manager dashboard, linked only from the footer
 - Prices in Ghana Cedis (GH₵), Mobile Money friendly messaging
@@ -23,7 +23,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-Demo manager login: `admin@kamgeorge.com` / `admin123` (via the 🔒 Store manager link in the footer).
+Demo manager login: `admin@kamgeorge.com` / `admin123` (via the Store manager link in the footer).
 
 ## Build & deploy
 
@@ -49,7 +49,7 @@ Push to `main` and Vercel will build & deploy automatically (framework preset: *
 ## Store manager (login required, link at the very bottom)
 
 - Public visitors only ever see the storefront. The only manager entry point
-  is a small **🔒 Store manager** link in the footer, at the very bottom of
+  is a small **Store manager** link in the footer, at the very bottom of
   every page.
 - Managers log in at `/admin/login` with the demo credentials:
   - email: `admin@kamgeorge.com`
@@ -67,8 +67,8 @@ Push to `main` and Vercel will build & deploy automatically (framework preset: *
 ```
 app/                 # Routes: home, cart, checkout, products/[id],
                      # login, register, account, admin, admin/login
-components/          # Navbar, Footer, ProductCard/Grid/Detail, Cart, Checkout,
-                     # AuthContext, ProductsContext, Login/Register/Account
-                     # forms, ManagerLoginForm, AdminDashboard
-lib/products.js      # Default product catalog data
+components/          # Navbar, Footer, ChatWidget, icons, ProductCard/Grid/Detail,
+                     # Cart, Checkout, Auth/Products contexts, Login/Register/
+                     # Account forms, ManagerLoginForm, AdminDashboard
+lib/                 # products.js (catalog), orders.js, assistant.js (chat brain)
 ```

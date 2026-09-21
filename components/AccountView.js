@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthContext";
+import { BagIcon } from "@/components/icons";
 import { formatPrice } from "@/lib/products";
 import {
   formatOrderDate,
@@ -102,7 +103,9 @@ export default function AccountView() {
         <h2>My purchases</h2>
         {orders.length === 0 ? (
           <div className="empty">
-            <p className="empty-emoji">🛍️</p>
+            <div className="empty-icon">
+              <BagIcon size={30} />
+            </div>
             <p className="empty-title">No purchases yet</p>
             <p className="muted">
               Your orders will appear here once you check out.
