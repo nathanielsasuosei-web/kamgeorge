@@ -112,6 +112,29 @@ export default function CheckoutForm() {
     );
   }
 
+  const canCheckout = user && user.role === "customer";
+  if (!canCheckout) {
+    return (
+      <div className="auth-wrap">
+        <div className="auth-card" style={{ textAlign: "center" }}>
+          <h2>Account required</h2>
+          <p className="muted">
+            Please log in or create an account to place your order. Your cart
+            is saved — you&apos;ll return here afterwards.
+          </p>
+          <div className="form-row">
+            <Link className="btn btn-secondary" href="/login?next=/checkout">
+              Log in
+            </Link>
+            <Link className="btn btn-primary" href="/register?next=/checkout">
+              Create account
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="cart-layout">
       <form className="checkout-form" onSubmit={submit}>

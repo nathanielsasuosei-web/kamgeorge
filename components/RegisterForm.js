@@ -57,12 +57,23 @@ export default function RegisterForm() {
   const handleVerified = () => {
     const res = completeRegistration(pending);
     if (res.ok) {
-      router.push("/account");
+      router.push(getNextPath());
     } else {
       setError(res.error);
       setStep(1);
     }
   };
+
+  // Where to go after signup (e.g. back to /checkout); defaults to /account
+  function getNextPath() {
+    try {
+      const next = new URLSearchParams(window.location.search).get("next");
+      if (next && next.startsWith("/") && !next.startsWith("//")) return next;
+    } catch {
+      // ignore
+    }
+    return "/account";
+  }
 
   const stepsBar = (
     <div className="steps">

@@ -10,6 +10,7 @@ An e-commerce storefront built with **Next.js 14** (App Router) — deployed on 
 - Customer accounts: modern register/login, My account with purchase history
 - Little George — built-in chat assistant answering product, delivery, payment & order questions
 - Custom backgrounds: white, black, blue, red, pink, green and gray themes
+- Account required: customers must log in or register before placing an order
 - Checkout flow with delivery form & order confirmation
 - Login-gated manager dashboard, linked only from the footer
 - Prices in Ghana Cedis (GH₵), Mobile Money friendly messaging
