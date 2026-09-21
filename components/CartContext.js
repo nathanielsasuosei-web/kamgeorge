@@ -1,12 +1,13 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { getProduct } from "@/lib/products";
+import { useProducts } from "@/components/ProductsContext";
 
 const CartContext = createContext(null);
 const STORAGE_KEY = "kamgeorge-cart";
 
 export function CartProvider({ children }) {
+  const { getProduct } = useProducts();
   const [items, setItems] = useState([]); // [{ id, qty }]
   const [loaded, setLoaded] = useState(false);
 
@@ -17,7 +18,14 @@ export function CartProvider({ children }) {
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) {
-          setItems(parsed.filter((i) => i && getProduct(i.id)));
+          setItems(
+            parsed
+              .filter((i) => i && typeof i.id === "string")
+              .map((i) => ({
+                id: i.id,
+                qty: Math.max(1, Math.min(99, Number(i.qty) || 1)),
+              }))
+          );
         }
       }
     } catch {
@@ -37,13 +45,16 @@ export function CartProvider({ children }) {
   }, [items, loaded]);
 
   const value = useMemo(() => {
-    const detailed = items.map((i) => ({
-      ...i,
-      product: getProduct(i.id),
-    }));
-    const count = items.reduce((sum, i) => sum + (i.qty || 0), 0);
+    // Only show items that still exist in the (possibly manager-edited) catalog
+    const detailed = items
+      .map((i) => ({
+        ...i,
+        product: getProduct(i.id),
+      }))
+      .filter((i) => i.product);
+    const count = detailed.reduce((sum, i) => sum + (i.qty || 0), 0);
     const subtotal = detailed.reduce(
-      (sum, i) => sum + (i.product ? i.product.price * i.qty : 0),
+      (sum, i) => sum + i.product.price * i.qty,
       0
     );
 
@@ -76,7 +87,7 @@ export function CartProvider({ children }) {
     const clear = () => setItems([]);
 
     return { items: detailed, count, subtotal, addItem, removeItem, setQty, clear, loaded };
-  }, [items, loaded]);
+  }, [items, loaded, getProduct]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

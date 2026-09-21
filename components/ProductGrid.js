@@ -1,16 +1,18 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { categories, products } from "@/lib/products";
+import { categories } from "@/lib/products";
+import { useProducts } from "@/components/ProductsContext";
 import ProductCard from "@/components/ProductCard";
 
 export default function ProductGrid() {
+  const { products: allProducts } = useProducts();
   const [category, setCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("featured");
 
   const filtered = useMemo(() => {
-    let list = [...products];
+    let list = [...allProducts];
     if (category !== "All") {
       list = list.filter((p) => p.category === category);
     }
@@ -37,7 +39,7 @@ export default function ProductGrid() {
         break;
     }
     return list;
-  }, [category, query, sort]);
+  }, [allProducts, category, query, sort]);
 
   return (
     <section id="products" className="section">
