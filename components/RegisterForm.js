@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthContext";
 
-export default function LoginForm() {
-  const { user, loaded, loginCustomer } = useAuth();
+export default function RegisterForm() {
+  const { user, loaded, register } = useAuth();
   const router = useRouter();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -38,7 +39,7 @@ export default function LoginForm() {
 
   const submit = (e) => {
     e.preventDefault();
-    const res = loginCustomer(email, password);
+    const res = register({ name, email, password });
     if (res.ok) {
       router.push("/account");
     } else {
@@ -49,9 +50,20 @@ export default function LoginForm() {
   return (
     <div className="auth-wrap">
       <form className="checkout-form auth-card" onSubmit={submit}>
-        <h3>Welcome back</h3>
-        <p className="muted">Log in to your customer account.</p>
+        <h3>Create your account</h3>
+        <p className="muted">Faster checkout and order updates.</p>
         {error && <p className="form-error">{error}</p>}
+        <label>
+          Full name
+          <input
+            className="input"
+            required
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. Ama Serwaa"
+            autoComplete="name"
+          />
+        </label>
         <label>
           Email
           <input
@@ -65,22 +77,23 @@ export default function LoginForm() {
           />
         </label>
         <label>
-          Password
+          Password (min. 6 characters)
           <input
             className="input"
             type="password"
             required
+            minLength={6}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            autoComplete="current-password"
+            autoComplete="new-password"
           />
         </label>
         <button type="submit" className="btn btn-primary btn-block">
-          Log in
+          Create account
         </button>
         <p className="auth-switch muted">
-          New here? <Link href="/register">Create an account</Link>
+          Already have an account? <Link href="/login">Log in</Link>
         </p>
       </form>
     </div>

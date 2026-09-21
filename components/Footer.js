@@ -40,6 +40,9 @@ export default function Footer() {
       </div>
       <div className="container footer-bottom">
         <span>© {new Date().getFullYear()} KamGeorge. All rights reserved.</span>
+        <Link href="/admin/login" className="footer-admin">
+          🔒 Store manager
+        </Link>
       </div>
     </footer>
   );

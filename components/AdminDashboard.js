@@ -41,16 +41,18 @@ export default function AdminDashboard() {
     );
   }
 
-  // Logged-out visitors (including direct URL access) never see the manage UI.
-  if (!user) {
+  // Only managers see the manage UI — everyone else gets a restricted notice.
+  if (!user || user.role !== "manager") {
     return (
       <div className="empty">
         <p className="empty-title">Restricted area 🔒</p>
         <p className="muted">
-          You must be logged in as a store manager to view this page.
+          {user
+            ? `You are logged in as ${user.email}, which is a customer account.`
+            : "You must be logged in as a store manager to view this page."}
         </p>
-        <Link href="/login" className="btn btn-primary">
-          Go to login
+        <Link href="/admin/login" className="btn btn-primary">
+          Go to manager login
         </Link>
       </div>
     );

@@ -16,8 +16,11 @@ export default function Navbar() {
 
   const handleLogout = () => {
     logout();
-    if (pathname === "/admin") router.push("/");
+    if (pathname === "/account" || pathname.startsWith("/admin"))
+      router.push("/");
   };
+
+  const firstName = user ? user.name.split(" ")[0] : "";
 
   return (
     <header className="navbar">
@@ -34,20 +37,29 @@ export default function Navbar() {
             Cart
             {count > 0 && <span className="cart-badge">{count}</span>}
           </Link>
-          {/* "Manage store" is only ever rendered for logged-in managers */}
           {loaded && user ? (
             <>
-              <Link href="/admin" className={linkClass("/admin")}>
-                Manage store
-              </Link>
+              {/* No admin links in the navbar — managers use the footer link */}
+              {user.role === "customer" ? (
+                <Link href="/account" className={linkClass("/account")}>
+                  Hi, {firstName}
+                </Link>
+              ) : (
+                <span className="nav-user">Hi, {firstName}</span>
+              )}
               <button className="btn btn-secondary btn-sm" onClick={handleLogout}>
                 Log out
               </button>
             </>
           ) : (
-            <Link href="/login" className={linkClass("/login")}>
-              Login
-            </Link>
+            <>
+              <Link href="/login" className={linkClass("/login")}>
+                Login
+              </Link>
+              <Link href="/register" className="btn btn-secondary btn-sm">
+                Sign up
+              </Link>
+            </>
           )}
           <Link href="/checkout" className="btn btn-primary btn-sm">
             Checkout

@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/products";
 import { useCart } from "@/components/CartContext";
+import { useAuth } from "@/components/AuthContext";
 
 const DELIVERY_FEE = 50;
 
 export default function CheckoutForm() {
   const { items, subtotal, clear, loaded } = useCart();
+  const { user } = useAuth();
   const [placed, setPlaced] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [form, setForm] = useState({
@@ -18,6 +20,13 @@ export default function CheckoutForm() {
     city: "Accra",
     payment: "momo",
   });
+
+  // Prefill the name for logged-in customers
+  useEffect(() => {
+    if (user && user.role === "customer") {
+      setForm((f) => (f.name ? f : { ...f, name: user.name }));
+    }
+  }, [user]);
 
   const update = (key) => (e) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
