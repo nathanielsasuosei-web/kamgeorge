@@ -2,34 +2,43 @@ import "./globals.css";
 import { AuthProvider } from "@/components/AuthContext";
 import { ProductsProvider } from "@/components/ProductsContext";
 import { CartProvider } from "@/components/CartContext";
+import { ThemeProvider } from "@/components/ThemeContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
+import ThemeFab from "@/components/ThemeFab";
 
 export const metadata = {
   title: "KamGeorge — Quality essentials delivered in Ghana",
   description:
-    "Shop electronics, fashion, home and beauty. Fast delivery across Ghana, Mobile Money and card accepted.",
+    "Shop electronics, fashion, home and beauty. Fast delivery across Ghana, Mobile Money accepted.",
   icons: {
     icon: "https://i.imgur.com/RsY4DbC_d.webp",
     apple: "https://i.imgur.com/RsY4DbC_d.webp",
   },
 };
 
+// Applies the saved background theme before first paint (avoids a flash)
+const themeInitScript = `(function(){try{var t=localStorage.getItem('kamgeorge-theme');if(t){document.documentElement.dataset.theme=t;}}catch(e){}})();`;
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          <ProductsProvider>
-            <CartProvider>
-              <Navbar />
-              <main className="container main">{children}</main>
-              <Footer />
-              <ChatWidget />
-            </CartProvider>
-          </ProductsProvider>
-        </AuthProvider>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <ThemeProvider>
+          <AuthProvider>
+            <ProductsProvider>
+              <CartProvider>
+                <Navbar />
+                <main className="container main">{children}</main>
+                <Footer />
+                <ChatWidget />
+                <ThemeFab />
+              </CartProvider>
+            </ProductsProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
