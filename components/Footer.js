@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LockIcon } from "@/components/icons";
+import { LockIcon, MobileIcon, ReturnsIcon, TruckIcon } from "@/components/icons";
 
 export default function Footer() {
   return (
@@ -44,6 +44,31 @@ export default function Footer() {
         <Link href="/admin/login" className="footer-admin">
           <LockIcon size={13} /> Store manager
         </Link>
+      </div>
+      <div className="trust-strip">
+        <div className="container trust-strip-inner">
+          <div className="trust-item">
+            <TruckIcon size={22} />
+            <div>
+              <strong>Fast delivery</strong>
+              <span>1–3 days nationwide with live order updates.</span>
+            </div>
+          </div>
+          <div className="trust-item">
+            <MobileIcon size={22} />
+            <div>
+              <strong>Pay your way</strong>
+              <span>Mobile Money, cards or pay on delivery.</span>
+            </div>
+          </div>
+          <div className="trust-item">
+            <ReturnsIcon size={22} />
+            <div>
+              <strong>Easy returns</strong>
+              <span>7-day no-questions returns on every order.</span>
+            </div>
+          </div>
+        </div>
       </div>
     </footer>
   );
