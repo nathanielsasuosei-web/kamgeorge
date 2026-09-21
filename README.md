@@ -8,6 +8,7 @@ An e-commerce storefront built with **Next.js 14** (App Router) — deployed on 
 - Product detail pages (statically generated)
 - Cart with quantity controls, persisted to `localStorage`
 - Customer accounts: modern register/login, My account with purchase history
+- Little George 🤖 — built-in chat assistant answering product, delivery, payment & order questions
 - Checkout flow with delivery form & order confirmation
 - Login-gated manager dashboard, linked only from the footer
 - Prices in Ghana Cedis (GH₵), Mobile Money friendly messaging

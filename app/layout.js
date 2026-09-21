@@ -4,6 +4,7 @@ import { ProductsProvider } from "@/components/ProductsContext";
 import { CartProvider } from "@/components/CartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ChatWidget from "@/components/ChatWidget";
 
 export const metadata = {
   title: "KamGeorge — Quality essentials delivered in Ghana",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
               <Navbar />
               <main className="container main">{children}</main>
               <Footer />
+              <ChatWidget />
             </CartProvider>
           </ProductsProvider>
         </AuthProvider>
