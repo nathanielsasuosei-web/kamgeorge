@@ -45,6 +45,11 @@ Push to `main` and Vercel will build & deploy automatically (framework preset: *
 - Customer accounts are stored in the browser's `localStorage` in this demo
   (passwords are not hashed — do not use real passwords). A production app
   would use a database with hashed passwords and server-side sessions.
+- **OTP verification**: signup, login and password reset (`/forgot-password`)
+  all require a 6-digit code (5-minute expiry, 5 attempts, 30s resend wait).
+  This demo shows the code on screen instead of sending a real SMS — see
+  `lib/otp.js`. To go live, plug an SMS provider (e.g. Arkesel, Hubtel or
+  Africa's Talking) into `requestOtp` via a server route + Vercel env vars.
 
 ## Store manager (login required, link at the very bottom)
 

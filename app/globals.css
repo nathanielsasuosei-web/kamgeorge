@@ -1839,3 +1839,75 @@ body {
   align-items: center;
   flex-wrap: wrap;
 }
+
+/* ---------- OTP verification ---------- */
+.steps {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.step {
+  flex: 1;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 10px 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.step-active {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.step-done {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.otp-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.otp-box {
+  width: 48px;
+  height: 54px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.demo-otp {
+  background: #fef9c3;
+  border: 1px dashed #ca8a04;
+  color: #854d0e;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.demo-otp strong {
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+}
+
+.otp-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.otp-actions .link-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
