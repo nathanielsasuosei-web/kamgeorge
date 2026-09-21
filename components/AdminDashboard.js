@@ -48,7 +48,7 @@ export default function AdminDashboard() {
         <p className="empty-title">Restricted area</p>
         <p className="muted">
           {user
-            ? `You are logged in as ${user.email}, which is a customer account.`
+            ? `You are logged in as ${user.email || user.phone}, which is a customer account.`
             : "You must be logged in as a store manager to view this page."}
         </p>
         <Link href="/admin/login" className="btn btn-primary">

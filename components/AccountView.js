@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/components/AuthContext";
+import { useAuth, userIdentifier } from "@/components/AuthContext";
 import { BagIcon } from "@/components/icons";
 import { formatPrice } from "@/lib/products";
 import {
   formatOrderDate,
-  getOrdersByEmail,
+  getOrdersForAccount,
   orderStatus,
   paymentLabel,
 } from "@/lib/orders";
@@ -20,7 +20,7 @@ export default function AccountView() {
 
   useEffect(() => {
     if (loaded && user && user.role === "customer") {
-      setOrders(getOrdersByEmail(user.email));
+      setOrders(getOrdersForAccount({ email: user.email, phone: user.phone }));
     }
   }, [loaded, user]);
 
@@ -53,7 +53,7 @@ export default function AccountView() {
     return (
       <div className="empty">
         <p className="empty-title">Signed in as store manager</p>
-        <p className="muted">{user.email}</p>
+        <p className="muted">{userIdentifier(user)}</p>
         <Link href="/admin" className="btn btn-primary">
           Go to manage store
         </Link>
@@ -77,7 +77,7 @@ export default function AccountView() {
           <h2>
             {user.name} <span className="pill-customer">Customer</span>
           </h2>
-          <p className="muted">{user.email}</p>
+          <p className="muted">{userIdentifier(user)}</p>
           <div className="profile-stats">
             <div>
               <strong>{orders.length}</strong>

@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/components/AuthContext";
+import { useAuth, userIdentifier } from "@/components/AuthContext";
 import { CardIcon, PackageIcon, ZapIcon } from "@/components/icons";
 
 export default function LoginForm() {
   const { user, loaded, loginCustomer } = useAuth();
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -27,7 +27,7 @@ export default function LoginForm() {
     return (
       <div className="empty">
         <p className="empty-title">You&apos;re already logged in</p>
-        <p className="muted">Signed in as {user.email}</p>
+        <p className="muted">Signed in as {userIdentifier(user)}</p>
         <Link
           href={isManager ? "/admin" : "/account"}
           className="btn btn-primary"
@@ -40,7 +40,7 @@ export default function LoginForm() {
 
   const submit = (e) => {
     e.preventDefault();
-    const res = loginCustomer(email, password);
+    const res = loginCustomer(identifier, password);
     if (res.ok) {
       router.push("/account");
     } else {
@@ -75,24 +75,24 @@ export default function LoginForm() {
             <span>
               <CardIcon size={20} />
             </span>
-            Mobile Money &amp; card ready
+            Mobile Money ready
           </li>
         </ul>
       </div>
       <form className="auth-form" onSubmit={submit}>
         <h3>Log in</h3>
-        <p className="muted">Access your customer account.</p>
+        <p className="muted">Use your email or mobile number.</p>
         {error && <p className="form-error">{error}</p>}
         <label>
-          Email
+          Email or mobile number
           <input
             className="input"
-            type="email"
+            type="text"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            autoComplete="email"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            placeholder="you@example.com or 024 123 4567"
+            autoComplete="username"
           />
         </label>
         <label>

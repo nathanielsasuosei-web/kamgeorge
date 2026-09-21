@@ -36,8 +36,8 @@ Push to `main` and Vercel will build & deploy automatically (framework preset: *
 
 ## Customer accounts
 
-- Shoppers can **create an account** at `/register` (name, email, password)
-  and log in at `/login`. Their details are prefilled at checkout, and
+- Shoppers can **create an account** at `/register` (name, email or
+  mobile number, password) and log in at `/login`. Their details are prefilled at checkout, and
   every order is saved to **My purchases** on their account page — with
   items, totals and a live status (Processing → In transit → Delivered).
   Guests who check out with an email will see those orders appear if they

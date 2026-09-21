@@ -49,7 +49,7 @@ export default function ManagerLoginForm() {
         <p className="muted">Restricted area. Store managers only.</p>
         {user && user.role === "customer" && (
           <p className="form-error">
-            You are logged in as {user.email} (customer). Logging in here will
+            You are logged in as {user.email || user.phone} (customer). Logging in here will
             switch to the manager session.
           </p>
         )}

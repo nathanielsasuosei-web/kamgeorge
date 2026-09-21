@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/components/AuthContext";
+import { useAuth, userIdentifier } from "@/components/AuthContext";
 import { PackageIcon, ReturnsIcon, ZapIcon } from "@/components/icons";
 
 export default function RegisterForm() {
   const { user, loaded, register } = useAuth();
   const router = useRouter();
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -28,7 +28,7 @@ export default function RegisterForm() {
     return (
       <div className="empty">
         <p className="empty-title">You&apos;re already logged in</p>
-        <p className="muted">Signed in as {user.email}</p>
+        <p className="muted">Signed in as {userIdentifier(user)}</p>
         <Link
           href={isManager ? "/admin" : "/account"}
           className="btn btn-primary"
@@ -41,7 +41,7 @@ export default function RegisterForm() {
 
   const submit = (e) => {
     e.preventDefault();
-    const res = register({ name, email, password });
+    const res = register({ name, identifier, password });
     if (res.ok) {
       router.push("/account");
     } else {
@@ -82,7 +82,7 @@ export default function RegisterForm() {
       </div>
       <form className="auth-form" onSubmit={submit}>
         <h3>Create account</h3>
-        <p className="muted">Start shopping smarter today.</p>
+        <p className="muted">Use your email or mobile number.</p>
         {error && <p className="form-error">{error}</p>}
         <label>
           Full name
@@ -96,15 +96,15 @@ export default function RegisterForm() {
           />
         </label>
         <label>
-          Email
+          Email or mobile number
           <input
             className="input"
-            type="email"
+            type="text"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            autoComplete="email"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            placeholder="you@example.com or 024 123 4567"
+            autoComplete="username"
           />
         </label>
         <label>

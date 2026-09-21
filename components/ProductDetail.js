@@ -68,7 +68,7 @@ export default function ProductDetail({ id }) {
           <ul className="detail-points">
             <li>✓ In stock — ships within 24 hours</li>
             <li>✓ 7-day easy returns</li>
-            <li>✓ Pay with Mobile Money, card or on delivery</li>
+            <li>✓ Pay securely with Mobile Money</li>
           </ul>
         </div>
       </div>

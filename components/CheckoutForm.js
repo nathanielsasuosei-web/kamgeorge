@@ -30,6 +30,7 @@ export default function CheckoutForm() {
         ...f,
         name: f.name || user.name,
         email: f.email || user.email,
+        phone: f.phone || user.phone,
       }));
     }
   }, [user]);
@@ -91,7 +92,7 @@ export default function CheckoutForm() {
             </Link>
             <p className="auth-switch muted">
               Want to track this order?{" "}
-              <Link href="/register">Create an account</Link> with this email.
+              <Link href="/register">Create an account</Link> with this email or number.
             </p>
           </>
         )}
@@ -126,11 +127,10 @@ export default function CheckoutForm() {
           />
         </label>
         <label>
-          Email (for order updates)
+          Email (optional, for order updates)
           <input
             className="input"
             type="email"
-            required
             value={form.email}
             onChange={update("email")}
             placeholder="you@example.com"
@@ -167,37 +167,12 @@ export default function CheckoutForm() {
         </label>
 
         <h3>Payment method</h3>
-        <div className="radio-group">
-          <label className="radio">
-            <input
-              type="radio"
-              name="payment"
-              value="momo"
-              checked={form.payment === "momo"}
-              onChange={update("payment")}
-            />
-            Mobile Money
-          </label>
-          <label className="radio">
-            <input
-              type="radio"
-              name="payment"
-              value="card"
-              checked={form.payment === "card"}
-              onChange={update("payment")}
-            />
-            Card
-          </label>
-          <label className="radio">
-            <input
-              type="radio"
-              name="payment"
-              value="pod"
-              checked={form.payment === "pod"}
-              onChange={update("payment")}
-            />
-            Pay on delivery
-          </label>
+        <div className="momo-box">
+          <strong>Mobile Money</strong>
+          <p className="muted">
+            Pay securely with MTN, Telecel or AirtelTigo MoMo. You&apos;ll
+            receive an approval prompt on your phone after placing the order.
+          </p>
         </div>
 
         <button type="submit" className="btn btn-primary btn-block">

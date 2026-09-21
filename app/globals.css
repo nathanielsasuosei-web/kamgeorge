@@ -1816,3 +1816,19 @@ body {
   background: #fff;
   flex-shrink: 0;
 }
+
+.momo-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.momo-box strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.momo-box p {
+  font-size: 0.9rem;
+}

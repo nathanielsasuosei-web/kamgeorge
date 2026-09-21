@@ -34,7 +34,7 @@ export default function Footer() {
           <h4>Support</h4>
           <ul>
             <li>Delivery in 1–3 days</li>
-            <li>Mobile Money &amp; card accepted</li>
+            <li>Mobile Money payments</li>
             <li>7-day easy returns</li>
             <li>hello@kamgeorge.com</li>
           </ul>
@@ -58,8 +58,8 @@ export default function Footer() {
           <div className="trust-item">
             <MobileIcon size={22} />
             <div>
-              <strong>Pay your way</strong>
-              <span>Mobile Money, cards or pay on delivery.</span>
+              <strong>MoMo payments</strong>
+              <span>Fast, secure Mobile Money checkout.</span>
             </div>
           </div>
           <div className="trust-item">
