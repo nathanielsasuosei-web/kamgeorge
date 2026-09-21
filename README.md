@@ -1,11 +1,38 @@
-<div align="center">
+# KamGeorge 🛍️
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+An e-commerce storefront built with **Next.js 14** (App Router) — deployed on **Vercel**.
 
-  <h1>Built with AI Studio</h2>
+## Features
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+- Product catalog with search, category filters & sorting
+- Product detail pages (statically generated)
+- Cart with quantity controls, persisted to `localStorage`
+- Checkout flow with delivery form & order confirmation
+- Prices in Ghana Cedis (GH₵), Mobile Money friendly messaging
+- Fully responsive, no CSS framework required
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Getting started
 
-</div>
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Build & deploy
+
+```bash
+npm run build
+npm start
+```
+
+Push to `main` and Vercel will build & deploy automatically (framework preset: **Next.js**).
+
+## Project structure
+
+```
+app/            # Routes: home, cart, checkout, products/[id]
+components/     # Navbar, ProductCard/Grid, Cart, Checkout, …
+lib/products.js # Product catalog data
+```
