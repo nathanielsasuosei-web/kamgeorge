@@ -189,37 +189,21 @@ body {
   font-weight: 700;
 }
 
-/* ---------- Hero ---------- */
-.hero {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 32px;
-  align-items: center;
-  background: var(--surface);
-  border: 1px solid var(--border);
+/* ---------- Hero banner ---------- */
+.hero-banner {
   border-radius: 20px;
-  padding: 48px;
-  margin-bottom: 24px;
   overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+  background: #f5f5f4;
 }
 
-.hero h1 {
-  font-size: 2.4rem;
-  line-height: 1.15;
-  margin: 14px 0 12px;
-  letter-spacing: -0.02em;
-}
-
-.pill {
-  display: inline-block;
-  background: var(--gold-bg);
-  color: var(--gold);
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+.hero-banner img {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: cover;
+  display: block;
 }
 
 .hero-actions {
@@ -227,65 +211,6 @@ body {
   gap: 12px;
   margin: 20px 0 28px;
   flex-wrap: wrap;
-}
-
-.hero-stats {
-  display: flex;
-  gap: 28px;
-}
-
-.hero-stats div {
-  display: flex;
-  flex-direction: column;
-}
-
-.hero-stats strong {
-  font-size: 1.2rem;
-}
-
-.hero-stats span {
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-
-.hero-art {
-  position: relative;
-  height: 280px;
-}
-
-.hero-card {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.hero-card-1 {
-  top: 10px;
-  left: 30px;
-  transform: rotate(-8deg);
-}
-.hero-card-2 {
-  top: 0;
-  right: 40px;
-  transform: rotate(6deg);
-}
-.hero-card-3 {
-  bottom: 20px;
-  left: 90px;
-  transform: rotate(4deg);
-}
-.hero-card-4 {
-  bottom: 40px;
-  right: 90px;
-  transform: rotate(-5deg);
 }
 
 /* ---------- Sections / toolbar ---------- */
