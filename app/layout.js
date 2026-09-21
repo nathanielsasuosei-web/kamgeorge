@@ -10,6 +10,10 @@ export const metadata = {
   title: "KamGeorge — Quality essentials delivered in Ghana",
   description:
     "Shop electronics, fashion, home and beauty. Fast delivery across Ghana, Mobile Money and card accepted.",
+  icons: {
+    icon: "https://i.imgur.com/RsY4DbC_d.webp",
+    apple: "https://i.imgur.com/RsY4DbC_d.webp",
+  },
 };
 
 export default function RootLayout({ children }) {

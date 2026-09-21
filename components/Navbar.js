@@ -26,7 +26,8 @@ export default function Navbar() {
     <header className="navbar">
       <div className="container navbar-inner">
         <Link href="/" className="brand">
-          <span className="brand-mark">K</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="brand-logo" src="https://i.imgur.com/RsY4DbC_d.webp" alt="KamGeorge logo" />
           <span className="brand-name">KamGeorge</span>
         </Link>
         <nav className="nav-links">

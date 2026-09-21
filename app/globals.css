@@ -1806,3 +1806,13 @@ body {
   display: inline-flex;
   flex-shrink: 0;
 }
+
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  object-fit: cover;
+  display: block;
+  background: #fff;
+  flex-shrink: 0;
+}
