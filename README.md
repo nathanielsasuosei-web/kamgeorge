@@ -54,8 +54,9 @@ Push to `main` and Vercel will build & deploy automatically (framework preset: *
 - Managers log in at `/admin/login` with the demo credentials:
   - email: `admin@kamgeorge.com`
   - password: `admin123`
-- After login, `/admin` opens the dashboard: add / edit / delete products,
-  reset the catalog. Visiting `/admin` without a manager session shows a
+- After login, `/admin` opens the dashboard: add / edit / delete products
+  (with photo upload or image URL), reset the catalog. Visiting `/admin`
+  without a manager session shows a
   restricted-area notice — never the management interface.
 - Note: this demo keeps the session and catalog overrides in the browser's
   `localStorage`, so manager edits apply to that browser. For multi-user

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/products";
 import { useAuth } from "@/components/AuthContext";
@@ -19,6 +19,40 @@ const EMPTY_FORM = {
 const CATEGORIES = ["Electronics", "Fashion", "Home", "Beauty"];
 const BADGES = ["", "New", "Sale", "Bestseller"];
 
+// Downscale uploaded photos so they stay small enough for browser storage
+const processImageFile = (file) =>
+  new Promise((resolve) => {
+    if (!file || !file.type.startsWith("image/")) {
+      resolve(null);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const MAX = 800;
+          let { width, height } = img;
+          const scale = Math.min(1, MAX / Math.max(width, height));
+          width = Math.max(1, Math.round(width * scale));
+          height = Math.max(1, Math.round(height * scale));
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL("image/jpeg", 0.82));
+        } catch {
+          resolve(null);
+        }
+      };
+      img.onerror = () => resolve(null);
+      img.src = reader.result;
+    };
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(file);
+  });
+
 export default function AdminDashboard() {
   const { user, loaded: authLoaded, logout } = useAuth();
   const {
@@ -32,6 +66,9 @@ export default function AdminDashboard() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState(null);
   const [message, setMessage] = useState("");
+  const [photoLabel, setPhotoLabel] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef(null);
 
   if (!authLoaded || !productsLoaded) {
     return (
@@ -73,12 +110,36 @@ export default function AdminDashboard() {
       badge: p.badge || "",
     });
     setMessage("");
+    setPhotoLabel(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setForm(EMPTY_FORM);
+    setPhotoLabel(null);
+  };
+
+  const handleFile = async (e) => {
+    const file = e.target.files && e.target.files[0];
+    e.target.value = ""; // allow re-selecting the same file
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setMessage("Please choose an image file (JPG, PNG, etc.).");
+      return;
+    }
+    setUploading(true);
+    const dataUrl = await processImageFile(file);
+    setUploading(false);
+    if (!dataUrl) {
+      setMessage(
+        "Couldn't read that photo. Try a different file or paste an image URL."
+      );
+      return;
+    }
+    setForm((f) => ({ ...f, image: dataUrl }));
+    setPhotoLabel(`“${file.name}” uploaded`);
+    setMessage("");
   };
 
   const submit = (e) => {
@@ -129,6 +190,7 @@ export default function AdminDashboard() {
   };
 
   const totalValue = products.reduce((sum, p) => sum + p.price, 0);
+  const hasUploadedPhoto = form.image.startsWith("data:");
 
   return (
     <>
@@ -245,12 +307,39 @@ export default function AdminDashboard() {
             />
           </label>
           <label>
-            Image URL
+            Product photo
+            <div className="photo-row">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => fileRef.current && fileRef.current.click()}
+                disabled={uploading}
+              >
+                {uploading ? "Processing…" : "Upload photo"}
+              </button>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*"
+                hidden
+                onChange={handleFile}
+              />
+              {photoLabel && (
+                <span className="muted">{photoLabel}</span>
+              )}
+            </div>
             <input
               className="input"
-              value={form.image}
-              onChange={update("image")}
-              placeholder="https://…"
+              value={hasUploadedPhoto ? "" : form.image}
+              onChange={(e) => {
+                setPhotoLabel(null);
+                update("image")(e);
+              }}
+              placeholder={
+                hasUploadedPhoto
+                  ? "Photo uploaded — paste a URL here to replace it"
+                  : "…or paste image URL (https://…)"
+              }
             />
           </label>
           {form.image.trim() ? (
