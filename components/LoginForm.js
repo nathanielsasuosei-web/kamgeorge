@@ -10,6 +10,7 @@ export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
   if (!loaded) {
@@ -47,10 +48,29 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="auth-wrap">
-      <form className="checkout-form auth-card" onSubmit={submit}>
-        <h3>Welcome back</h3>
-        <p className="muted">Log in to your customer account.</p>
+    <div className="auth-split">
+      <div className="auth-panel">
+        <div className="brand brand-light">
+          <span className="brand-mark">K</span>
+          <span className="brand-name">KamGeorge</span>
+        </div>
+        <h2>Welcome back 👋</h2>
+        <p>Log in for faster checkout and full order tracking.</p>
+        <ul className="auth-points">
+          <li>
+            <span>⚡</span> Express checkout with saved details
+          </li>
+          <li>
+            <span>📦</span> Track every purchase in one place
+          </li>
+          <li>
+            <span>💳</span> Mobile Money &amp; card ready
+          </li>
+        </ul>
+      </div>
+      <form className="auth-form" onSubmit={submit}>
+        <h3>Log in</h3>
+        <p className="muted">Access your customer account.</p>
         {error && <p className="form-error">{error}</p>}
         <label>
           Email
@@ -66,17 +86,26 @@ export default function LoginForm() {
         </label>
         <label>
           Password
-          <input
-            className="input"
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-            autoComplete="current-password"
-          />
+          <div className="password-wrap">
+            <input
+              className="input"
+              type={showPassword ? "text" : "password"}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword((s) => !s)}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
         </label>
-        <button type="submit" className="btn btn-primary btn-block">
+        <button type="submit" className="btn btn-primary btn-block btn-lg">
           Log in
         </button>
         <p className="auth-switch muted">

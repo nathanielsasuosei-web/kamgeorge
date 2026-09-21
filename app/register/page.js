@@ -5,10 +5,5 @@ export const metadata = {
 };
 
 export default function RegisterPage() {
-  return (
-    <>
-      <h1 className="page-title">Create account</h1>
-      <RegisterForm />
-    </>
-  );
+  return <RegisterForm />;
 }

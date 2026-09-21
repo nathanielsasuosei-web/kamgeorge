@@ -5,10 +5,5 @@ export const metadata = {
 };
 
 export default function LoginPage() {
-  return (
-    <>
-      <h1 className="page-title">Login</h1>
-      <LoginForm />
-    </>
-  );
+  return <LoginForm />;
 }

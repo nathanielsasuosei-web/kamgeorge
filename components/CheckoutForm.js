@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/products";
+import { saveOrder } from "@/lib/orders";
 import { useCart } from "@/components/CartContext";
 import { useAuth } from "@/components/AuthContext";
 
@@ -15,16 +16,21 @@ export default function CheckoutForm() {
   const [orderId, setOrderId] = useState("");
   const [form, setForm] = useState({
     name: "",
+    email: "",
     phone: "",
     address: "",
     city: "Accra",
     payment: "momo",
   });
 
-  // Prefill the name for logged-in customers
+  // Prefill contact details for logged-in customers
   useEffect(() => {
     if (user && user.role === "customer") {
-      setForm((f) => (f.name ? f : { ...f, name: user.name }));
+      setForm((f) => ({
+        ...f,
+        name: f.name || user.name,
+        email: f.email || user.email,
+      }));
     }
   }, [user]);
 
@@ -33,7 +39,29 @@ export default function CheckoutForm() {
 
   const submit = (e) => {
     e.preventDefault();
-    setOrderId(`KG-${Math.floor(100000 + Math.random() * 900000)}`);
+    const id = `KG-${Math.floor(100000 + Math.random() * 900000)}`;
+    const total = subtotal + DELIVERY_FEE;
+    saveOrder({
+      id,
+      email: form.email.trim().toLowerCase(),
+      name: form.name.trim(),
+      phone: form.phone.trim(),
+      address: form.address.trim(),
+      city: form.city.trim(),
+      payment: form.payment,
+      items: items.map(({ product, qty }) => ({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        qty,
+        image: product.image,
+      })),
+      subtotal,
+      deliveryFee: DELIVERY_FEE,
+      total,
+      date: new Date().toISOString(),
+    });
+    setOrderId(id);
     setPlaced(true);
     clear();
   };
@@ -43,6 +71,7 @@ export default function CheckoutForm() {
   }
 
   if (placed) {
+    const isCustomer = user && user.role === "customer";
     return (
       <div className="empty">
         <p className="success-check">✓</p>
@@ -51,9 +80,21 @@ export default function CheckoutForm() {
           Thank you, {form.name || "shopper"}. We&apos;ll call {form.phone || "you"} to
           confirm delivery to {form.city}.
         </p>
-        <Link href="/" className="btn btn-primary">
-          Back to shop
-        </Link>
+        {isCustomer ? (
+          <Link href="/account" className="btn btn-primary">
+            View my purchases
+          </Link>
+        ) : (
+          <>
+            <Link href="/" className="btn btn-primary">
+              Back to shop
+            </Link>
+            <p className="auth-switch muted">
+              Want to track this order?{" "}
+              <Link href="/register">Create an account</Link> with this email.
+            </p>
+          </>
+        )}
       </div>
     );
   }
@@ -82,6 +123,17 @@ export default function CheckoutForm() {
             value={form.name}
             onChange={update("name")}
             placeholder="e.g. Ama Serwaa"
+          />
+        </label>
+        <label>
+          Email (for order updates)
+          <input
+            className="input"
+            type="email"
+            required
+            value={form.email}
+            onChange={update("email")}
+            placeholder="you@example.com"
           />
         </label>
         <label>

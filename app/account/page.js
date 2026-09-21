@@ -5,10 +5,5 @@ export const metadata = {
 };
 
 export default function AccountPage() {
-  return (
-    <>
-      <h1 className="page-title">My account</h1>
-      <AccountView />
-    </>
-  );
+  return <AccountView />;
 }

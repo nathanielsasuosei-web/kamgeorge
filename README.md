@@ -7,7 +7,7 @@ An e-commerce storefront built with **Next.js 14** (App Router) — deployed on 
 - Product catalog with search, category filters & sorting
 - Product detail pages (statically generated)
 - Cart with quantity controls, persisted to `localStorage`
-- Customer accounts: register, login, My account page
+- Customer accounts: modern register/login, My account with purchase history
 - Checkout flow with delivery form & order confirmation
 - Login-gated manager dashboard, linked only from the footer
 - Prices in Ghana Cedis (GH₵), Mobile Money friendly messaging
@@ -36,8 +36,11 @@ Push to `main` and Vercel will build & deploy automatically (framework preset: *
 ## Customer accounts
 
 - Shoppers can **create an account** at `/register` (name, email, password)
-  and log in at `/login`. Their name is prefilled at checkout and they get
-  a **My account** page.
+  and log in at `/login`. Their details are prefilled at checkout, and
+  every order is saved to **My purchases** on their account page — with
+  items, totals and a live status (Processing → In transit → Delivered).
+  Guests who check out with an email will see those orders appear if they
+  later register with the same address.
 - Customer accounts are stored in the browser's `localStorage` in this demo
   (passwords are not hashed — do not use real passwords). A production app
   would use a database with hashed passwords and server-side sessions.
