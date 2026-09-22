@@ -1,7 +1,25 @@
+"use client";
+
 import Link from "next/link";
 import { LockIcon, MobileIcon, ReturnsIcon, TruckIcon } from "@/components/icons";
+import { useSettings } from "@/components/SettingsContext";
+
+// Make bare email addresses clickable (e.g. hello@kamgeorge.com).
+function SupportLine({ text }) {
+  const emailMatch = text.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  if (emailMatch) {
+    return (
+      <li>
+        <a href={`mailto:${text}`}>{text}</a>
+      </li>
+    );
+  }
+  return <li>{text}</li>;
+}
 
 export default function Footer() {
+  const { settings } = useSettings();
+
   return (
     <footer className="footer">
       <div className="container footer-grid">
@@ -33,10 +51,9 @@ export default function Footer() {
         <div>
           <h4>Support</h4>
           <ul>
-            <li>Delivery in 1–3 days</li>
-            <li>Mobile Money payments</li>
-            <li>7-day easy returns</li>
-            <li>hello@kamgeorge.com</li>
+            {settings.support.map((line) => (
+              <SupportLine key={line} text={line} />
+            ))}
           </ul>
         </div>
       </div>

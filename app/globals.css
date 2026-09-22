@@ -894,6 +894,29 @@ body {
   align-items: start;
 }
 
+.admin-settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+.support-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.support-row .input {
+  flex: 1;
+}
+
+.support-row .link-danger {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -996,6 +1019,10 @@ body {
 
 @media (max-width: 960px) {
   .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-settings {
     grid-template-columns: 1fr;
   }
 }

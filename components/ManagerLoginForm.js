@@ -6,7 +6,8 @@ import Link from "next/link";
 import { DEMO_ADMIN, useAuth } from "@/components/AuthContext";
 
 export default function ManagerLoginForm() {
-  const { user, loaded, loginManager } = useAuth();
+  const { user, loaded, loginManager, adminEmail, usingDefaultCredentials } =
+    useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,7 +63,7 @@ export default function ManagerLoginForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="admin@kamgeorge.com"
+            placeholder={adminEmail}
             autoComplete="email"
           />
         </label>
@@ -81,10 +82,13 @@ export default function ManagerLoginForm() {
         <button type="submit" className="btn btn-primary btn-block">
           Log in
         </button>
-        <p className="muted demo-hint">
-          Demo credentials — email: <code>{DEMO_ADMIN.email}</code> · password:{" "}
-          <code>{DEMO_ADMIN.password}</code>
-        </p>
+        {usingDefaultCredentials && (
+          <p className="muted demo-hint">
+            Demo credentials — email: <code>{DEMO_ADMIN.email}</code> ·
+            password: <code>{DEMO_ADMIN.password}</code> (change them from the
+            manager dashboard after logging in)
+          </p>
+        )}
       </form>
     </div>
   );

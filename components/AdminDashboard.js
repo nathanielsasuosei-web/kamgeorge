@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/products";
 import { useAuth } from "@/components/AuthContext";
 import { useProducts } from "@/components/ProductsContext";
+import { useSettings } from "@/components/SettingsContext";
 
 const EMPTY_FORM = {
   name: "",
@@ -54,7 +55,8 @@ const processImageFile = (file) =>
   });
 
 export default function AdminDashboard() {
-  const { user, loaded: authLoaded, logout } = useAuth();
+  const { user, loaded: authLoaded, logout, adminEmail, changeManagerCredentials } =
+    useAuth();
   const {
     products,
     addProduct,
@@ -63,6 +65,8 @@ export default function AdminDashboard() {
     resetCatalog,
     loaded: productsLoaded,
   } = useProducts();
+  const { settings, updateSettings, resetSettings, loaded: settingsLoaded } =
+    useSettings();
   const [form, setForm] = useState(EMPTY_FORM);
   const [editingId, setEditingId] = useState(null);
   const [message, setMessage] = useState("");
@@ -70,7 +74,27 @@ export default function AdminDashboard() {
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef(null);
 
-  if (!authLoaded || !productsLoaded) {
+  // Site settings: footer Support lines
+  const [supportDraft, setSupportDraft] = useState(settings.support);
+  const [supportMsg, setSupportMsg] = useState("");
+  const [supportErr, setSupportErr] = useState("");
+
+  // Site settings: manager login
+  const [loginForm, setLoginForm] = useState({
+    currentPassword: "",
+    email: "",
+    password: "",
+    confirm: "",
+  });
+  const [loginMsg, setLoginMsg] = useState("");
+  const [loginErr, setLoginErr] = useState("");
+
+  // Keep the draft in sync when settings load or are saved/reset
+  useEffect(() => {
+    setSupportDraft(settings.support);
+  }, [settings.support]);
+
+  if (!authLoaded || !productsLoaded || !settingsLoaded) {
     return (
       <div className="empty">
         <p>Loading…</p>
@@ -187,6 +211,67 @@ export default function AdminDashboard() {
       cancelEdit();
       setMessage("Catalog reset to the original products.");
     }
+  };
+
+  // ----- Site settings: Support lines -----
+  const updateSupportLine = (index, value) =>
+    setSupportDraft((lines) =>
+      lines.map((line, i) => (i === index ? value : line))
+    );
+
+  const addSupportLine = () => setSupportDraft((lines) => [...lines, ""]);
+
+  const removeSupportLine = (index) =>
+    setSupportDraft((lines) => lines.filter((_, i) => i !== index));
+
+  const saveSupport = (e) => {
+    e.preventDefault();
+    const lines = supportDraft.map((l) => l.trim()).filter(Boolean);
+    if (!lines.length) {
+      setSupportMsg("");
+      setSupportErr("Add at least one support line.");
+      return;
+    }
+    updateSettings({ support: lines });
+    setSupportErr("");
+    setSupportMsg("Support section updated.");
+  };
+
+  const resetSupport = () => {
+    resetSettings();
+    setSupportErr("");
+    setSupportMsg("Support lines reset to the defaults.");
+  };
+
+  // ----- Site settings: manager login -----
+  const updateLogin = (key) => (e) =>
+    setLoginForm((f) => ({ ...f, [key]: e.target.value }));
+
+  const submitLogin = (e) => {
+    e.preventDefault();
+    const email = loginForm.email.trim() || adminEmail;
+    if (loginForm.password && loginForm.password !== loginForm.confirm) {
+      setLoginMsg("");
+      setLoginErr("New password and confirmation don't match.");
+      return;
+    }
+    const res = changeManagerCredentials({
+      currentPassword: loginForm.currentPassword,
+      email,
+      newPassword: loginForm.password || null,
+    });
+    if (!res.ok) {
+      setLoginMsg("");
+      setLoginErr(res.error);
+      return;
+    }
+    setLoginErr("");
+    setLoginMsg(
+      loginForm.password
+        ? "Login details updated. Use your new email and password next time you sign in."
+        : "Login details updated. Use your new email next time you sign in."
+    );
+    setLoginForm({ currentPassword: "", email: "", password: "", confirm: "" });
   };
 
   const totalValue = products.reduce((sum, p) => sum + p.price, 0);
@@ -411,6 +496,120 @@ export default function AdminDashboard() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="admin-settings">
+        <form className="checkout-form" onSubmit={saveSupport}>
+          <h3>Footer · Support section</h3>
+          <p className="muted">
+            These lines appear in the <strong>Support</strong> list at the
+            bottom of every page. Email addresses become clickable.
+          </p>
+          {supportErr && <p className="form-error">{supportErr}</p>}
+          {supportMsg && <p className="form-success">{supportMsg}</p>}
+          {supportDraft.map((line, i) => (
+            <div className="support-row" key={i}>
+              <input
+                className="input"
+                value={line}
+                onChange={(e) => updateSupportLine(i, e.target.value)}
+                placeholder="e.g. Delivery in 1–3 days"
+                maxLength={80}
+              />
+              <button
+                type="button"
+                className="link-danger"
+                onClick={() => removeSupportLine(i)}
+                aria-label={`Remove line ${i + 1}`}
+                title="Remove line"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+          <div className="form-row">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={addSupportLine}
+              disabled={supportDraft.length >= 10}
+            >
+              + Add line
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={resetSupport}
+            >
+              Reset to defaults
+            </button>
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Save support section
+          </button>
+        </form>
+
+        <form className="checkout-form" onSubmit={submitLogin}>
+          <h3>Manager login</h3>
+          <p className="muted">
+            Current login email: <strong>{adminEmail}</strong>. You stay signed
+            in after changing these.
+          </p>
+          {loginErr && <p className="form-error">{loginErr}</p>}
+          {loginMsg && <p className="form-success">{loginMsg}</p>}
+          <label>
+            Current password (required)
+            <input
+              className="input"
+              type="password"
+              required
+              value={loginForm.currentPassword}
+              onChange={updateLogin("currentPassword")}
+              autoComplete="current-password"
+              placeholder="Confirm your current password"
+            />
+          </label>
+          <label>
+            New email (leave blank to keep {adminEmail})
+            <input
+              className="input"
+              type="email"
+              value={loginForm.email}
+              onChange={updateLogin("email")}
+              autoComplete="email"
+              placeholder={adminEmail}
+            />
+          </label>
+          <div className="form-row">
+            <label>
+              New password (optional)
+              <input
+                className="input"
+                type="password"
+                minLength={6}
+                value={loginForm.password}
+                onChange={updateLogin("password")}
+                autoComplete="new-password"
+                placeholder="At least 6 characters"
+              />
+            </label>
+            <label>
+              Confirm new password
+              <input
+                className="input"
+                type="password"
+                minLength={6}
+                value={loginForm.confirm}
+                onChange={updateLogin("confirm")}
+                autoComplete="new-password"
+                placeholder="Repeat new password"
+              />
+            </label>
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Update login details
+          </button>
+        </form>
       </div>
     </>
   );

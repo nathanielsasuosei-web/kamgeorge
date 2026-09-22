@@ -5,13 +5,49 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 const AuthContext = createContext(null);
 const SESSION_KEY = "kamgeorge-auth";
 const CUSTOMERS_KEY = "kamgeorge-customers";
+const ADMIN_KEY = "kamgeorge-admin";
 
-// Demo manager credentials (no backend in this demo — see README).
+// Default manager credentials — used until the manager changes them
+// from the dashboard (stored in localStorage, see changeManagerCredentials).
 export const DEMO_ADMIN = {
   email: "admin@kamgeorge.com",
   password: "admin123",
   name: "Store Manager",
 };
+
+// Read the current manager credentials, falling back to the defaults.
+export function readAdminCredentials() {
+  try {
+    const raw = localStorage.getItem(ADMIN_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (
+        parsed &&
+        typeof parsed.email === "string" &&
+        typeof parsed.password === "string" &&
+        parsed.email &&
+        parsed.password
+      ) {
+        return {
+          email: parsed.email,
+          password: parsed.password,
+          name: parsed.name || DEMO_ADMIN.name,
+        };
+      }
+    }
+  } catch {
+    // ignore corrupted storage
+  }
+  return DEMO_ADMIN;
+}
+
+function writeAdminCredentials(creds) {
+  try {
+    localStorage.setItem(ADMIN_KEY, JSON.stringify(creds));
+  } catch {
+    // storage unavailable
+  }
+}
 
 function readCustomers() {
   try {
@@ -60,9 +96,12 @@ function findCustomer(customers, { email, phone }) {
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null); // { name, email?, phone?, role }
+  const [admin, setAdmin] = useState(DEMO_ADMIN); // current manager credentials
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    const creds = readAdminCredentials();
+    setAdmin(creds);
     try {
       const raw = localStorage.getItem(SESSION_KEY);
       if (raw) {
@@ -70,7 +109,7 @@ export function AuthProvider({ children }) {
         if (
           parsed &&
           parsed.role === "manager" &&
-          parsed.email === DEMO_ADMIN.email
+          parsed.email === creds.email
         ) {
           setUser({
             name: parsed.name,
@@ -131,7 +170,7 @@ export function AuthProvider({ children }) {
             ok: false,
             error: "Password must be at least 6 characters.",
           };
-        if (cleanEmail === DEMO_ADMIN.email)
+        if (cleanEmail === readAdminCredentials().email)
           return {
             ok: false,
             error: "That email is reserved. Please use a different one.",
@@ -234,19 +273,71 @@ export function AuthProvider({ children }) {
       };
 
       const loginManager = (email, password) => {
-        if (
-          normalizeEmail(email) === DEMO_ADMIN.email &&
-          password === DEMO_ADMIN.password
-        ) {
+        const creds = readAdminCredentials();
+        if (normalizeEmail(email) === creds.email && password === creds.password) {
           saveSession({
-            name: DEMO_ADMIN.name,
-            email: DEMO_ADMIN.email,
+            name: creds.name,
+            email: creds.email,
             phone: null,
             role: "manager",
           });
           return { ok: true };
         }
         return { ok: false, error: "Invalid manager email or password." };
+      };
+
+      // Let the manager change their own login email / password.
+      // Requires the current password; keeps an active manager session valid.
+      const changeManagerCredentials = ({
+        currentPassword,
+        email,
+        newPassword,
+      }) => {
+        const creds = readAdminCredentials();
+        if (currentPassword !== creds.password) {
+          return { ok: false, error: "Current password is incorrect." };
+        }
+        const cleanEmail = normalizeEmail(email);
+        if (!validEmail(cleanEmail)) {
+          return { ok: false, error: "Please enter a valid email address." };
+        }
+        if (cleanEmail !== creds.email) {
+          // Don't take over an email a customer account already uses.
+          if (findCustomer(readCustomers(), { email: cleanEmail })) {
+            return {
+              ok: false,
+              error: "A customer account already uses that email.",
+            };
+          }
+        }
+        if (newPassword && newPassword.length < 6) {
+          return {
+            ok: false,
+            error: "New password must be at least 6 characters.",
+          };
+        }
+        const next = {
+          email: cleanEmail,
+          password: newPassword || creds.password,
+          name: creds.name,
+        };
+        writeAdminCredentials(next);
+        setAdmin(next);
+        // Keep an active manager session in sync with the new email.
+        setUser((u) => {
+          if (!u || u.role !== "manager") return u;
+          const updated = { ...u, email: next.email };
+          try {
+            localStorage.setItem(
+              SESSION_KEY,
+              JSON.stringify({ ...updated, loginAt: Date.now() })
+            );
+          } catch {
+            // storage unavailable
+          }
+          return updated;
+        });
+        return { ok: true };
       };
 
       const logout = () => {
@@ -261,6 +352,10 @@ export function AuthProvider({ children }) {
       return {
         user,
         loaded,
+        adminEmail: admin.email,
+        usingDefaultCredentials:
+          admin.email === DEMO_ADMIN.email &&
+          admin.password === DEMO_ADMIN.password,
         prepareRegistration,
         completeRegistration,
         verifyCustomerPassword,
@@ -268,10 +363,11 @@ export function AuthProvider({ children }) {
         accountExists,
         resetPassword,
         loginManager,
+        changeManagerCredentials,
         logout,
       };
     },
-    [user, loaded]
+    [user, loaded, admin]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
