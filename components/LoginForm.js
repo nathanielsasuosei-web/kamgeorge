@@ -8,11 +8,11 @@ import { CardIcon, PackageIcon, ZapIcon } from "@/components/icons";
 import OtpVerify from "@/components/OtpVerify";
 
 export default function LoginForm() {
-  const { user, loaded, verifyCustomerPassword, loginCustomerWithOtp } =
+  const { user, loaded, verifyCustomerPassword, loginCustomerWithCode } =
     useAuth();
   const router = useRouter();
   const [step, setStep] = useState(1);
-  const [identifier, setIdentifier] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -43,7 +43,7 @@ export default function LoginForm() {
 
   const submitPassword = (e) => {
     e.preventDefault();
-    const res = verifyCustomerPassword(identifier, password);
+    const res = verifyCustomerPassword(email, password);
     if (res.ok) {
       setError("");
       setStep(2);
@@ -53,7 +53,7 @@ export default function LoginForm() {
   };
 
   const handleVerified = () => {
-    const res = loginCustomerWithOtp(identifier);
+    const res = loginCustomerWithCode(email);
     if (res.ok) {
       router.push(getNextPath());
     } else {
@@ -79,7 +79,7 @@ export default function LoginForm() {
         1 · Password
       </div>
       <div className={step === 2 ? "step step-active" : "step"}>
-        2 · Verify code
+        2 · Verify email
       </div>
     </div>
   );
@@ -89,7 +89,7 @@ export default function LoginForm() {
       <>
         {stepsBar}
         <OtpVerify
-          identifier={identifier.trim()}
+          identifier={email.trim()}
           purpose="login"
           onVerified={handleVerified}
           onBack={() => setStep(1)}
@@ -134,17 +134,17 @@ export default function LoginForm() {
         </div>
         <form className="auth-form" onSubmit={submitPassword}>
           <h3>Log in</h3>
-          <p className="muted">Use your email or mobile number.</p>
+          <p className="muted">Use the email address you registered with.</p>
           {error && <p className="form-error">{error}</p>}
           <label>
-            Email or mobile number
+            Email address
             <input
               className="input"
-              type="text"
+              type="email"
               required
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              placeholder="you@example.com or 024 123 4567"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
               autoComplete="username"
             />
           </label>

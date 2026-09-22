@@ -31,7 +31,7 @@ function writeCustomers(list) {
   }
 }
 
-const normalizeEmail = (email) => email.trim().toLowerCase();
+const normalizeEmail = (email) => (email || "").trim().toLowerCase();
 const validEmail = (email) => /.+@.+\..+/.test(email);
 
 // Ghana mobile numbers: 0241234567, +233241234567, 233241234567 (spaces/dashes ignored)
@@ -46,22 +46,10 @@ export function validPhone(raw) {
   return /^0\d{9}$/.test(normalizePhone(raw));
 }
 
-// Display identifier for a customer (email or mobile number, whichever exists)
+// Display identifier for a customer (email, falling back to phone)
 export function userIdentifier(user) {
   if (!user) return "";
   return user.email || user.phone || "";
-}
-
-// Split an identifier into email/phone parts
-function parseIdentifier(rawInput) {
-  const rawId = (rawInput || "").trim();
-  const isEmail = rawId.includes("@");
-  return {
-    rawId,
-    isEmail,
-    email: isEmail ? normalizeEmail(rawId) : null,
-    phone: isEmail ? null : normalizePhone(rawId),
-  };
 }
 
 function findCustomer(customers, { email, phone }) {
@@ -125,19 +113,15 @@ export function AuthProvider({ children }) {
         }
       };
 
-      // Step 1 of registration: validate only (OTP verification comes next)
-      const prepareRegistration = ({ name, identifier, password }) => {
+      // Step 1 of registration: validate only (email verification comes next)
+      const prepareRegistration = ({ name, email, phone, password }) => {
         const cleanName = (name || "").trim();
-        const { rawId, isEmail, email, phone } = parseIdentifier(identifier);
+        const cleanEmail = normalizeEmail(email);
+        const cleanPhone = (phone || "").trim();
         if (!cleanName) return { ok: false, error: "Please enter your name." };
-        if (!rawId)
-          return {
-            ok: false,
-            error: "Please enter your email or mobile number.",
-          };
-        if (isEmail && !validEmail(email))
+        if (!validEmail(cleanEmail))
           return { ok: false, error: "Please enter a valid email address." };
-        if (!isEmail && !validPhone(rawId))
+        if (cleanPhone && !validPhone(cleanPhone))
           return {
             ok: false,
             error: "Please enter a valid mobile number (e.g. 024 123 4567).",
@@ -147,34 +131,38 @@ export function AuthProvider({ children }) {
             ok: false,
             error: "Password must be at least 6 characters.",
           };
-        if (email === DEMO_ADMIN.email)
+        if (cleanEmail === DEMO_ADMIN.email)
           return {
             ok: false,
             error: "That email is reserved. Please use a different one.",
           };
-        if (findCustomer(readCustomers(), { email, phone })) {
+        if (findCustomer(readCustomers(), { email: cleanEmail })) {
           return {
             ok: false,
-            error: `An account with this ${
-              isEmail ? "email" : "number"
-            } already exists. Try logging in.`,
+            error:
+              "An account with this email already exists. Try logging in.",
           };
         }
         return {
           ok: true,
-          account: { name: cleanName, email, phone, password },
+          account: {
+            name: cleanName,
+            email: cleanEmail,
+            phone: cleanPhone ? normalizePhone(cleanPhone) : null,
+            password,
+          },
         };
       };
 
-      // Step 2 of registration: create the account after OTP is verified
+      // Step 2 of registration: create the account after the email is verified
       const completeRegistration = (account) => {
-        if (!account || !account.name || (!account.email && !account.phone))
+        if (!account || !account.name || !account.email)
           return { ok: false, error: "Something went wrong. Please start again." };
         const customers = readCustomers();
-        if (findCustomer(customers, account)) {
+        if (findCustomer(customers, { email: account.email })) {
           return {
             ok: false,
-            error: "An account with this already exists. Try logging in.",
+            error: "An account with this email already exists. Try logging in.",
           };
         }
         // Demo only: stored in plain text in localStorage — never do this in production.
@@ -194,24 +182,26 @@ export function AuthProvider({ children }) {
         return { ok: true };
       };
 
-      // Step 1 of login: check the password (OTP verification comes next)
-      const verifyCustomerPassword = (identifier, password) => {
-        const { email, phone } = parseIdentifier(identifier);
-        const found = findCustomer(readCustomers(), { email, phone });
+      // Step 1 of login: check the password (email verification comes next)
+      const verifyCustomerPassword = (email, password) => {
+        const found = findCustomer(readCustomers(), {
+          email: normalizeEmail(email),
+        });
         if (!found)
           return {
             ok: false,
-            error: "No account found. Check your details or create one below.",
+            error: "No account found. Check your email or create one below.",
           };
         if (found.password !== password)
           return { ok: false, error: "Incorrect password." };
         return { ok: true, name: found.name };
       };
 
-      // Step 2 of login: create the session after OTP is verified
-      const loginCustomerWithOtp = (identifier) => {
-        const { email, phone } = parseIdentifier(identifier);
-        const found = findCustomer(readCustomers(), { email, phone });
+      // Step 2 of login: create the session after the email is verified
+      const loginCustomerWithCode = (email) => {
+        const found = findCustomer(readCustomers(), {
+          email: normalizeEmail(email),
+        });
         if (!found) return { ok: false, error: "Account no longer exists." };
         saveSession({
           name: found.name,
@@ -222,22 +212,21 @@ export function AuthProvider({ children }) {
         return { ok: true };
       };
 
-      const accountExists = (identifier) => {
-        const { email, phone } = parseIdentifier(identifier);
-        return !!findCustomer(readCustomers(), { email, phone });
+      const accountExists = (email) => {
+        return !!findCustomer(readCustomers(), {
+          email: normalizeEmail(email),
+        });
       };
 
-      const resetPassword = (identifier, newPassword) => {
+      const resetPassword = (email, newPassword) => {
         if (!newPassword || newPassword.length < 6)
           return {
             ok: false,
             error: "Password must be at least 6 characters.",
           };
-        const { email, phone } = parseIdentifier(identifier);
+        const clean = normalizeEmail(email);
         const customers = readCustomers();
-        const idx = customers.findIndex(
-          (c) => (email && c.email === email) || (phone && c.phone === phone)
-        );
+        const idx = customers.findIndex((c) => c.email === clean);
         if (idx === -1) return { ok: false, error: "Account not found." };
         customers[idx] = { ...customers[idx], password: newPassword };
         writeCustomers(customers);
@@ -275,7 +264,7 @@ export function AuthProvider({ children }) {
         prepareRegistration,
         completeRegistration,
         verifyCustomerPassword,
-        loginCustomerWithOtp,
+        loginCustomerWithCode,
         accountExists,
         resetPassword,
         loginManager,

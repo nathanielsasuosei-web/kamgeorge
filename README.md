@@ -38,20 +38,20 @@ Push to `main` and Vercel will build & deploy automatically (framework preset: *
 
 ## Customer accounts
 
-- Shoppers can **create an account** at `/register` (name, email or
-  mobile number, password) and log in at `/login`. Their details are prefilled at checkout, and
+- Shoppers **create an account** at `/register` (name, email, optional
+  mobile number, password) and log in at `/login` — an account is required
+  before an order can be placed. Their details are prefilled at checkout, and
   every order is saved to **My purchases** on their account page — with
   items, totals and a live status (Processing → In transit → Delivered).
-  Guests who check out with an email will see those orders appear if they
-  later register with the same address.
 - Customer accounts are stored in the browser's `localStorage` in this demo
   (passwords are not hashed — do not use real passwords). A production app
   would use a database with hashed passwords and server-side sessions.
-- **OTP verification**: signup, login and password reset (`/forgot-password`)
-  all require a 6-digit code (5-minute expiry, 5 attempts, 30s resend wait).
-  This demo shows the code on screen instead of sending a real SMS — see
-  `lib/otp.js`. To go live, plug an SMS provider (e.g. Arkesel, Hubtel or
-  Africa's Talking) into `requestOtp` via a server route + Vercel env vars.
+- **Email verification**: signup, login and password reset (`/forgot-password`)
+  all require a 6-digit code sent to the customer's email (5-minute expiry,
+  5 attempts, 30s resend wait). This demo shows the code on screen instead
+  of sending a real email — see `lib/otp.js`. To go live, plug an email
+  provider (e.g. Resend or SendGrid) into `requestEmailCode` via a server
+  route + Vercel env vars.
 
 ## Store manager (login required, link at the very bottom)
 

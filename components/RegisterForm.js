@@ -13,7 +13,8 @@ export default function RegisterForm() {
   const [step, setStep] = useState(1);
   const [pending, setPending] = useState(null);
   const [name, setName] = useState("");
-  const [identifier, setIdentifier] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -44,7 +45,7 @@ export default function RegisterForm() {
 
   const submitDetails = (e) => {
     e.preventDefault();
-    const res = prepareRegistration({ name, identifier, password });
+    const res = prepareRegistration({ name, email, phone, password });
     if (res.ok) {
       setPending(res.account);
       setError("");
@@ -81,7 +82,7 @@ export default function RegisterForm() {
         1 · Account details
       </div>
       <div className={step === 2 ? "step step-active" : "step"}>
-        2 · Verify code
+        2 · Verify email
       </div>
     </div>
   );
@@ -91,7 +92,7 @@ export default function RegisterForm() {
       <>
         {stepsBar}
         <OtpVerify
-          identifier={pending.email || pending.phone}
+          identifier={pending.email}
           purpose="register"
           onVerified={handleVerified}
           onBack={() => setStep(1)}
@@ -136,7 +137,9 @@ export default function RegisterForm() {
         </div>
         <form className="auth-form" onSubmit={submitDetails}>
           <h3>Create account</h3>
-          <p className="muted">Use your email or mobile number.</p>
+          <p className="muted">
+            We&apos;ll send a verification code to your email.
+          </p>
           {error && <p className="form-error">{error}</p>}
           <label>
             Full name
@@ -150,15 +153,26 @@ export default function RegisterForm() {
             />
           </label>
           <label>
-            Email or mobile number
+            Email address
             <input
               className="input"
-              type="text"
+              type="email"
               required
-              value={identifier}
-              onChange={(e) => setIdentifier(e.target.value)}
-              placeholder="you@example.com or 024 123 4567"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
               autoComplete="username"
+            />
+          </label>
+          <label>
+            Mobile number (optional)
+            <input
+              className="input"
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="024 123 4567"
+              autoComplete="tel"
             />
           </label>
           <label>

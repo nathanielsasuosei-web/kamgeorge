@@ -1,19 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { requestOtp, verifyOtp } from "@/lib/otp";
+import { maskEmail, requestEmailCode, verifyEmailCode } from "@/lib/otp";
 import OtpInput from "@/components/OtpInput";
-
-function maskIdentifier(id) {
-  const s = (id || "").trim();
-  if (s.includes("@")) {
-    const [local, domain] = s.split("@");
-    return `${(local || "").slice(0, 1)}***@${domain || ""}`;
-  }
-  const d = s.replace(/[\s\-.()]/g, "");
-  if (d.length <= 5) return "***";
-  return `${d.slice(0, 3)} ••• ${d.slice(-3)}`;
-}
 
 export default function OtpVerify({
   identifier,
@@ -31,7 +20,7 @@ export default function OtpVerify({
 
   const send = useCallback(async () => {
     setSending(true);
-    const res = requestOtp(identifier, purpose);
+    const res = requestEmailCode(identifier, purpose);
     setSending(false);
     if (!res.ok) {
       setError(res.error);
@@ -61,7 +50,7 @@ export default function OtpVerify({
       setError("Please enter the 6-digit code.");
       return;
     }
-    const res = verifyOtp(identifier, code, purpose);
+    const res = verifyEmailCode(identifier, code, purpose);
     if (res.ok) {
       onVerified();
     } else {
@@ -72,14 +61,14 @@ export default function OtpVerify({
   return (
     <div className="auth-wrap">
       <form className="checkout-form auth-card" onSubmit={submit}>
-        <h3>Enter verification code</h3>
+        <h3>Check your email</h3>
         <p className="muted">
-          We sent a 6-digit code to {maskIdentifier(identifier)}. It expires in
-          5 minutes.
+          We sent a 6-digit verification code to {maskEmail(identifier)}. It
+          expires in 5 minutes.
         </p>
         {demoCode && (
           <p className="demo-otp">
-            Demo mode — no real SMS is sent. Your code is{" "}
+            ✉️ Demo mode — email preview. Your code is{" "}
             <strong>
               {demoCode.slice(0, 3)} {demoCode.slice(3)}
             </strong>
@@ -94,7 +83,7 @@ export default function OtpVerify({
           }}
         />
         <button type="submit" className="btn btn-primary btn-block">
-          Verify code
+          Verify email
         </button>
         <div className="otp-actions">
           <button type="button" className="link-btn" onClick={onBack}>
@@ -109,8 +98,8 @@ export default function OtpVerify({
             {sending
               ? "Sending…"
               : cooldown > 0
-                ? `Resend in ${cooldown}s`
-                : "Resend code"}
+                ? `Resend email in ${cooldown}s`
+                : "Resend email"}
           </button>
         </div>
       </form>
