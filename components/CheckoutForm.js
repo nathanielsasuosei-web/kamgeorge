@@ -3,17 +3,19 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/products";
-import { saveOrder } from "@/lib/orders";
 import { useCart } from "@/components/CartContext";
 import { useAuth } from "@/components/AuthContext";
 
 const DELIVERY_FEE = 50;
+const PENDING_KEY = "kamgeorge-pending-order";
 
 export default function CheckoutForm() {
   const { items, subtotal, clear, loaded } = useCart();
   const { user } = useAuth();
   const [placed, setPlaced] = useState(false);
   const [orderId, setOrderId] = useState("");
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState("");
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -38,18 +40,24 @@ export default function CheckoutForm() {
   const update = (key) => (e) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+    setPayError("");
+    const email = form.email.trim().toLowerCase();
+    if (!email) {
+      setPayError("Email is required so Paystack can send a receipt.");
+      return;
+    }
     const id = `KG-${Math.floor(100000 + Math.random() * 900000)}`;
     const total = subtotal + DELIVERY_FEE;
-    saveOrder({
+    const order = {
       id,
-      email: form.email.trim().toLowerCase(),
+      email,
       name: form.name.trim(),
       phone: form.phone.trim(),
       address: form.address.trim(),
       city: form.city.trim(),
-      payment: form.payment,
+      payment: "paystack",
       items: items.map(({ product, qty }) => ({
         id: product.id,
         name: product.name,
@@ -61,10 +69,31 @@ export default function CheckoutForm() {
       deliveryFee: DELIVERY_FEE,
       total,
       date: new Date().toISOString(),
-    });
-    setOrderId(id);
-    setPlaced(true);
-    clear();
+    };
+
+    setPaying(true);
+    try {
+      sessionStorage.setItem(PENDING_KEY, JSON.stringify(order));
+      const res = await fetch("/api/paystack/initialize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          amount: total,
+          orderId: id,
+          metadata: { name: order.name, phone: order.phone, city: order.city },
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.authorizationUrl) {
+        throw new Error(data.error || "Could not start Paystack checkout.");
+      }
+      window.location.href = data.authorizationUrl;
+    } catch (err) {
+      sessionStorage.removeItem(PENDING_KEY);
+      setPayError(err.message || "Payment failed to start.");
+      setPaying(false);
+    }
   };
 
   if (!loaded) {
@@ -150,10 +179,11 @@ export default function CheckoutForm() {
           />
         </label>
         <label>
-          Email (optional, for order updates)
+          Email (required for Paystack receipt)
           <input
             className="input"
             type="email"
+            required
             value={form.email}
             onChange={update("email")}
             placeholder="you@example.com"
@@ -191,15 +221,23 @@ export default function CheckoutForm() {
 
         <h3>Payment method</h3>
         <div className="momo-box">
-          <strong>Mobile Money</strong>
+          <strong>Paystack</strong>
           <p className="muted">
-            Pay securely with MTN, Telecel or AirtelTigo MoMo. You&apos;ll
-            receive an approval prompt on your phone after placing the order.
+            Pay securely with Mobile Money (MTN, Telecel, AirtelTigo) or card.
+            You&apos;ll be redirected to Paystack to complete payment.
           </p>
         </div>
 
-        <button type="submit" className="btn btn-primary btn-block">
-          Place order — {formatPrice(subtotal + DELIVERY_FEE)}
+        {payError ? <p className="muted" role="alert">{payError}</p> : null}
+
+        <button
+          type="submit"
+          className="btn btn-primary btn-block"
+          disabled={paying}
+        >
+          {paying
+            ? "Redirecting to Paystack…"
+            : `Pay with Paystack — ${formatPrice(subtotal + DELIVERY_FEE)}`}
         </button>
       </form>
 

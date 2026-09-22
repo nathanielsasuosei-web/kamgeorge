@@ -93,6 +93,21 @@ screen instead of being emailed. To send real emails via
    spam if it doesn't appear). If sending ever fails, the shop falls back to
    the demo on-screen code so testing never breaks.
 
+## Paystack payments
+
+Checkout initializes a Paystack transaction (GHS, amount in pesewas) and
+redirects the customer to Paystack. After payment they return to
+`/checkout/callback`, which verifies the reference server-side before the
+order is saved.
+
+1. Create a Paystack account and copy the **secret key** from
+   Settings → API Keys & Webhooks.
+2. Locally: add `PAYSTACK_SECRET_KEY=sk_test_…` to `.env.local`.
+   On Vercel: Project → Settings → Environment Variables → add
+   `PAYSTACK_SECRET_KEY` (and optionally `NEXT_PUBLIC_SITE_URL` as your
+   live origin).
+3. Redeploy. Use Paystack test cards / MoMo in test mode.
+
 ## Project structure
 
 ```
