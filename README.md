@@ -13,6 +13,8 @@ An e-commerce storefront built with **Next.js 14** (App Router) — deployed on 
 - Account required: customers must log in or register before placing an order
 - Checkout flow with delivery form & order confirmation
 - Login-gated manager dashboard, linked only from the footer
+- Manager can edit the footer **Support** lines and change the manager
+  **login email & password** from the dashboard (Site settings)
 - Prices in Ghana Cedis (GH₵), Mobile Money friendly messaging
 - Fully responsive, no CSS framework required
 
@@ -25,7 +27,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-Demo manager login: `admin@kamgeorge.com` / `admin123` (via the Store manager link in the footer).
+Demo manager login: `admin@kamgeorge.com` / `admin123` (via the Store manager link in the footer). The manager can change this email and password from the dashboard after logging in.
 
 ## Build & deploy
 
@@ -65,7 +67,17 @@ Push to `main` and Vercel will build & deploy automatically (framework preset: *
   (with photo upload or image URL), reset the catalog. Visiting `/admin`
   without a manager session shows a
   restricted-area notice — never the management interface.
-- Note: this demo keeps the session and catalog overrides in the browser's
+- **Site settings** (bottom of the dashboard):
+  - *Footer · Support section* — edit the Support lines shown on every page
+    (delivery, Mobile Money, returns, contact email…). Add or remove lines;
+    email addresses become clickable `mailto:` links. "Reset to defaults"
+    restores the original four lines.
+  - *Manager login* — change the manager email and/or password (current
+    password required). The demo-credentials hint on the login page
+    disappears once the defaults are changed. The active session stays
+    signed in after a change.
+- Note: this demo keeps the session, catalog overrides, site settings and
+  manager credentials in the browser's
   `localStorage`, so manager edits apply to that browser. For multi-user
   sync you would connect a database (e.g. Vercel Postgres) with server-side
   auth.

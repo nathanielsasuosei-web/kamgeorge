@@ -1,6 +1,7 @@
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthContext";
 import { ProductsProvider } from "@/components/ProductsContext";
+import { SettingsProvider } from "@/components/SettingsContext";
 import { CartProvider } from "@/components/CartContext";
 import { ThemeProvider } from "@/components/ThemeContext";
 import Navbar from "@/components/Navbar";
@@ -28,15 +29,17 @@ export default function RootLayout({ children }) {
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <ThemeProvider>
           <AuthProvider>
-            <ProductsProvider>
-              <CartProvider>
-                <Navbar />
-                <main className="container main">{children}</main>
-                <Footer />
-                <ChatWidget />
-                <ThemeFab />
-              </CartProvider>
-            </ProductsProvider>
+            <SettingsProvider>
+              <ProductsProvider>
+                <CartProvider>
+                  <Navbar />
+                  <main className="container main">{children}</main>
+                  <Footer />
+                  <ChatWidget />
+                  <ThemeFab />
+                </CartProvider>
+              </ProductsProvider>
+            </SettingsProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>
