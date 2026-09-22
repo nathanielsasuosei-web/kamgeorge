@@ -13,6 +13,8 @@ export default function OtpVerify({
 }) {
   const [code, setCode] = useState("");
   const [demoCode, setDemoCode] = useState(null);
+  const [emailed, setEmailed] = useState(false);
+  const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [cooldown, setCooldown] = useState(0);
   const [sending, setSending] = useState(false);
@@ -20,13 +22,15 @@ export default function OtpVerify({
 
   const send = useCallback(async () => {
     setSending(true);
-    const res = requestEmailCode(identifier, purpose);
+    const res = await requestEmailCode(identifier, purpose);
     setSending(false);
     if (!res.ok) {
       setError(res.error);
       return;
     }
-    setDemoCode(res.code);
+    setDemoCode(res.sent ? null : res.code);
+    setEmailed(!!res.sent);
+    setNotice(res.notice || "");
     setCooldown(30);
     setError("");
     setCode("");
@@ -66,6 +70,11 @@ export default function OtpVerify({
           We sent a 6-digit verification code to {maskEmail(identifier)}. It
           expires in 5 minutes.
         </p>
+        {emailed && (
+          <p className="form-success">
+            Code sent! Check your inbox (and spam folder).
+          </p>
+        )}
         {demoCode && (
           <p className="demo-otp">
             ✉️ Demo mode — email preview. Your code is{" "}
@@ -74,6 +83,7 @@ export default function OtpVerify({
             </strong>
           </p>
         )}
+        {notice && <p className="muted">{notice}</p>}
         {error && <p className="form-error">{error}</p>}
         <OtpInput
           value={code}

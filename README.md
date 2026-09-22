@@ -70,6 +70,28 @@ Push to `main` and Vercel will build & deploy automatically (framework preset: *
   sync you would connect a database (e.g. Vercel Postgres) with server-side
   auth.
 
+## Real email delivery
+
+Out of the box the shop runs in **demo mode**: verification codes appear on
+screen instead of being emailed. To send real emails (free, via Gmail):
+
+1. Create a Gmail address for the store (e.g. `kamgeorge.store@gmail.com`).
+2. Turn on **2-Step Verification** (Google Account → Security).
+3. Create an **App password** (Security → App passwords → Mail → generate).
+   Copy the 16-character password.
+4. Tell the app about it:
+   - Locally: copy `.env.example` to `.env.local` and fill in `EMAIL_USER`
+     and `EMAIL_PASS`, then restart the server.
+   - On Vercel: Project → Settings → Environment Variables → add
+     `EMAIL_USER` and `EMAIL_PASS` → redeploy.
+5. Register/log in with a real email — the code now arrives by email (check
+   spam if it doesn't appear). If sending ever fails, the shop falls back to
+   the demo on-screen code so testing never breaks.
+
+For higher volume or a branded address (e.g. `hello@kamgeorge.com`), swap
+the Gmail block in `app/api/send-code/route.js` for Resend/SendGrid later —
+the rest of the flow stays the same.
+
 ## Project structure
 
 ```
