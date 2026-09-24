@@ -21,6 +21,10 @@ const categoryHref = (category) =>
     ? "/#products"
     : `/?c=${encodeURIComponent(category)}#products`;
 
+const headerCategories = categories.filter(
+  (category) => !["All", "Electronics", "Home"].includes(category)
+);
+
 export default function Navbar() {
   const { count } = useCart();
   const { user, loaded, logout } = useAuth();
@@ -213,19 +217,17 @@ export default function Navbar() {
                   Shop all
                 </Link>
               </li>
-              {categories
-                .filter((c) => c !== "All")
-                .map((c) => (
-                  <li key={c}>
-                    <Link
-                      href={categoryHref(c)}
-                      className="header-nav-link"
-                      onClick={onCategoryClick(c)}
-                    >
-                      {c}
-                    </Link>
-                  </li>
-                ))}
+              {headerCategories.map((c) => (
+                <li key={c}>
+                  <Link
+                    href={categoryHref(c)}
+                    className="header-nav-link"
+                    onClick={onCategoryClick(c)}
+                  >
+                    {c}
+                  </Link>
+                </li>
+              ))}
               <li>
                 <Link href="/cart" className={linkClass("/cart")}>
                   Cart
@@ -254,15 +256,13 @@ export default function Navbar() {
                     Shop all
                   </Link>
                 </li>
-                {categories
-                  .filter((c) => c !== "All")
-                  .map((c) => (
-                    <li key={c}>
-                      <Link href={categoryHref(c)} onClick={onCategoryClick(c)}>
-                        {c}
-                      </Link>
-                    </li>
-                  ))}
+                {headerCategories.map((c) => (
+                  <li key={c}>
+                    <Link href={categoryHref(c)} onClick={onCategoryClick(c)}>
+                      {c}
+                    </Link>
+                  </li>
+                ))}
                 <li>
                   <Link href="/cart">Cart {count > 0 ? `(${count})` : ""}</Link>
                 </li>
