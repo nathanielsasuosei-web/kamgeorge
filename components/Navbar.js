@@ -10,9 +10,7 @@ import { SHOP_SEARCH_EVENT } from "@/lib/shopSearch";
 import {
   CartIcon,
   MenuIcon,
-  PhoneIcon,
   SearchIcon,
-  TruckIcon,
   UserIcon,
   XIcon,
 } from "@/components/icons";
@@ -114,16 +112,8 @@ export default function Navbar() {
     <>
       {/* ---------- Announcement strip (scrolls away with the page) ---------- */}
       <div className="header-top">
-        <div className="container header-top-inner">
-          <span className="header-top-msg">
-            <TruckIcon size={15} />
-            Free delivery in Accra on orders over GH₵500 · Pay with Mobile Money
-          </span>
+        <div className="container header-top-inner" style={{ justifyContent: "flex-end" }}>
           <div className="header-top-links">
-            <span className="header-top-item">
-              <PhoneIcon size={14} />
-              030 000 0000
-            </span>
             {loaded && user ? (
               <>
                 <Link href={accountHref} className="header-top-item">
