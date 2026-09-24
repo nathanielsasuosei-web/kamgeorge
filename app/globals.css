@@ -594,15 +594,22 @@ body {
   overflow: hidden;
   border: 1px solid var(--border);
   margin-bottom: 24px;
-  background: #f5f5f4;
+  background: #000;
+}
+
+.hero-banner picture {
+  display: block;
+  line-height: 0;
 }
 
 .hero-banner img {
   width: 100%;
   height: auto;
-  max-height: 480px;
-  object-fit: cover;
+  max-height: 520px;
+  object-fit: contain;
+  object-position: center;
   display: block;
+  background: #000;
 }
 
 .hero-actions {
