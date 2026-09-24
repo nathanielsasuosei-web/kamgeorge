@@ -4,7 +4,12 @@ An e-commerce storefront built with **Next.js 14** (App Router) — deployed on 
 
 ## Features
 
+- **Heavy sticky header** — announcement strip (delivery + MoMo message),
+  brand block, product search, account/cart actions with live cart count,
+  a Checkout button and a category navigation row. The top strip collapses
+  smoothly as you scroll, and everything stacks into a mobile drawer.
 - Product catalog with search, category filters & sorting
+- Header search & category links deep-link the grid (`/?q=…`, `/?c=…#products`)
 - Product detail pages (statically generated)
 - Cart with quantity controls, persisted to `localStorage`
 - Customer accounts: modern register/login, My account with purchase history

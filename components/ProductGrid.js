@@ -1,15 +1,41 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { categories } from "@/lib/products";
+import { SHOP_SEARCH_EVENT } from "@/lib/shopSearch";
 import { useProducts } from "@/components/ProductsContext";
 import ProductCard from "@/components/ProductCard";
 
+// The header drives this grid two ways: deep links (/?q=… / ?c=…#products)
+// read on mount, and an in-page event when the header acts while already here.
 export default function ProductGrid() {
   const { products: allProducts } = useProducts();
   const [category, setCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("featured");
+
+  useEffect(() => {
+    const apply = ({ q = "", c = "" } = {}) => {
+      if (categories.includes(c)) setCategory(c);
+      else if (!c) setCategory("All");
+      setQuery(q);
+    };
+
+    const fromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      apply({ q: params.get("q") || "", c: params.get("c") || "" });
+    };
+
+    const onHeaderSearch = (event) => apply(event.detail || {});
+
+    fromUrl();
+    window.addEventListener(SHOP_SEARCH_EVENT, onHeaderSearch);
+    window.addEventListener("popstate", fromUrl);
+    return () => {
+      window.removeEventListener(SHOP_SEARCH_EVENT, onHeaderSearch);
+      window.removeEventListener("popstate", fromUrl);
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     let list = [...allProducts];
