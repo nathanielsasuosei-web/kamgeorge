@@ -226,3 +226,230 @@ export function PhoneIcon(props) {
     </Svg>
   );
 }
+
+export function HelpIcon(props) {
+  return (
+    <Svg {...props}>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+      <line x1="12" y1="17" x2="12.01" y2="17" />
+    </Svg>
+  );
+}
+
+export function ChevronDownIcon(props) {
+  return (
+    <Svg {...props}>
+      <polyline points="6 9 12 15 18 9" />
+    </Svg>
+  );
+}
+
+export function ChevronLeftIcon(props) {
+  return (
+    <Svg {...props}>
+      <polyline points="15 18 9 12 15 6" />
+    </Svg>
+  );
+}
+
+export function ChevronRightIcon(props) {
+  return (
+    <Svg {...props}>
+      <polyline points="9 18 15 12 9 6" />
+    </Svg>
+  );
+}
+
+export function StarIcon(props) {
+  return (
+    <Svg {...props}>
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </Svg>
+  );
+}
+
+export function StarBadgeIcon({ size = 20, className }) {
+  return (
+    <span
+      className={className}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        background: "#f68b1e",
+        color: "#ffffff",
+        fontWeight: "bold",
+        fontSize: size * 0.65,
+        lineHeight: 1,
+        boxShadow: "0 2px 4px rgba(246, 139, 30, 0.3)",
+      }}
+      aria-hidden="true"
+    >
+      ★
+    </span>
+  );
+}
+
+// Category Icons
+export function StoreIcon(props) {
+  return (
+    <Svg {...props}>
+      <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7" />
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+      <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4" />
+      <path d="M2 7h20" />
+      <path d="M22 7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2" />
+    </Svg>
+  );
+}
+
+export function PhoneTabletIcon(props) {
+  return (
+    <Svg {...props}>
+      <rect width="10" height="14" x="3" y="5" rx="1.5" />
+      <path d="M8 16h.01" />
+      <rect width="7" height="11" x="14" y="8" rx="1" />
+      <path d="M17.5 16h.01" />
+    </Svg>
+  );
+}
+
+export function BeautyIcon(props) {
+  return (
+    <Svg {...props}>
+      <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z" />
+      <path d="M5 3v4" />
+      <path d="M3 5h4" />
+      <path d="M19 17v4" />
+      <path d="M17 19h4" />
+    </Svg>
+  );
+}
+
+export function HomeOfficeIcon(props) {
+  return (
+    <Svg {...props}>
+      <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+      <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+      <line x1="6" y1="2" x2="6" y2="4" />
+      <line x1="10" y1="2" x2="10" y2="4" />
+      <line x1="14" y1="2" x2="14" y2="4" />
+    </Svg>
+  );
+}
+
+export function AppliancesIcon(props) {
+  return (
+    <Svg {...props}>
+      <rect width="16" height="20" x="4" y="2" rx="2" />
+      <line x1="4" y1="9" x2="20" y2="9" />
+      <line x1="9" y1="5" x2="9" y2="6" />
+      <line x1="9" y1="13" x2="9" y2="16" />
+    </Svg>
+  );
+}
+
+export function TvIcon(props) {
+  return (
+    <Svg {...props}>
+      <rect width="20" height="15" x="2" y="7" rx="2" />
+      <polyline points="17 2 12 7 7 2" />
+    </Svg>
+  );
+}
+
+export function FashionIcon(props) {
+  return (
+    <Svg {...props}>
+      <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23Z" />
+    </Svg>
+  );
+}
+
+export function SupermarketIcon(props) {
+  return (
+    <Svg {...props}>
+      <circle cx="8" cy="21" r="1" />
+      <circle cx="19" cy="21" r="1" />
+      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+    </Svg>
+  );
+}
+
+export function PlusIcon(props) {
+  return (
+    <Svg {...props}>
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </Svg>
+  );
+}
+
+export function TrashIcon(props) {
+  return (
+    <Svg {...props}>
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+    </Svg>
+  );
+}
+
+export function EditIcon(props) {
+  return (
+    <Svg {...props}>
+      <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+    </Svg>
+  );
+}
+
+export function CheckIcon(props) {
+  return (
+    <Svg {...props}>
+      <polyline points="20 6 9 17 4 12" />
+    </Svg>
+  );
+}
+
+// Icon helper function to render category icon by string key
+export function RenderCategoryIcon({ iconKey, size = 18, className }) {
+  switch (iconKey?.toLowerCase()) {
+    case "store":
+    case "stores":
+    case "official":
+      return <StoreIcon size={size} className={className} />;
+    case "phone":
+    case "phones":
+    case "tablets":
+      return <PhoneTabletIcon size={size} className={className} />;
+    case "beauty":
+    case "health":
+      return <BeautyIcon size={size} className={className} />;
+    case "home":
+    case "office":
+      return <HomeOfficeIcon size={size} className={className} />;
+    case "appliances":
+    case "appliance":
+      return <AppliancesIcon size={size} className={className} />;
+    case "electronics":
+    case "tv":
+      return <TvIcon size={size} className={className} />;
+    case "fashion":
+    case "clothes":
+      return <FashionIcon size={size} className={className} />;
+    case "supermarket":
+    case "groceries":
+      return <SupermarketIcon size={size} className={className} />;
+    case "headphones":
+      return <HeadphonesIcon size={size} className={className} />;
+    case "watch":
+      return <WatchIcon size={size} className={className} />;
+    case "glasses":
+      return <GlassesIcon size={size} className={className} />;
+    default:
+      return <StoreIcon size={size} className={className} />;
+  }
+}

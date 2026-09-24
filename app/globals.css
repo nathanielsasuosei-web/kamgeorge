@@ -2484,3 +2484,1134 @@ body {
     left: 16px;
   }
 }
+
+/* ==========================================================================
+   JUMIA-STYLE STOREFRONT & ADMIN CONTROLS
+   ========================================================================== */
+
+/* ---------- 1. Top Promotional Banner ---------- */
+.top-promo-banner {
+  background: #0062ff;
+  color: #ffffff;
+  padding: 8px 0;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.top-promo-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.top-promo-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.top-promo-title {
+  font-weight: 900;
+  font-size: 1.15rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-style: italic;
+}
+
+.top-promo-badge {
+  background: #ffffff;
+  color: #0044cc;
+  font-weight: 900;
+  font-size: 0.82rem;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.top-promo-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.top-promo-call {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.top-promo-call-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  opacity: 0.9;
+  text-transform: uppercase;
+}
+
+.top-promo-call-number {
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.top-promo-btn {
+  background: #ffffff;
+  color: #111827;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.top-promo-btn:hover {
+  transform: translateY(-1px);
+  background: #f8fafc;
+}
+
+/* ---------- 2. Sub-top Utility Header ---------- */
+.sub-header-strip {
+  background: #f1f1f2;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 4px 0;
+  font-size: 0.78rem;
+  color: #4b5563;
+}
+
+.sub-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sub-header-sell {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #f68b1e;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.sub-header-sell:hover {
+  text-decoration: underline;
+}
+
+.sub-header-star {
+  font-size: 0.85rem;
+}
+
+.sub-header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #64748b;
+}
+
+.sub-brand-badge {
+  color: #1e293b;
+  font-weight: 800;
+}
+
+.sub-feature-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sub-feature-dot {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+/* ---------- 3. Main Header (Jumia-style) ---------- */
+.site-header-jumia {
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.jumia-header-main {
+  background: #ffffff;
+  border-bottom: 1px solid #f1f1f2;
+}
+
+.jumia-header-main-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 14px 20px;
+}
+
+.jumia-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  color: #111827;
+}
+
+.jumia-logo-text {
+  font-size: 1.65rem;
+  font-weight: 900;
+  letter-spacing: -0.6px;
+  color: #000000;
+  text-transform: uppercase;
+}
+
+.jumia-search-bar {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  max-width: 580px;
+  height: 42px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.jumia-search-bar:focus-within {
+  border-color: #f68b1e;
+  box-shadow: 0 0 0 3px rgba(246, 139, 30, 0.15);
+}
+
+.jumia-search-input-wrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 0 12px;
+  gap: 8px;
+}
+
+.jumia-search-icon {
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.jumia-search-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 0.92rem;
+  color: #111827;
+  background: transparent;
+}
+
+.jumia-search-input::placeholder {
+  color: #9ca3af;
+}
+
+.jumia-search-btn {
+  background: #f68b1e;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.4px;
+  padding: 0 24px;
+  height: 100%;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.15s ease;
+}
+
+.jumia-search-btn:hover {
+  background: #e07b14;
+}
+
+.jumia-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.jumia-action-dropdown-wrap {
+  position: relative;
+}
+
+.jumia-header-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: #282828;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.jumia-header-action-btn:hover {
+  color: #f68b1e;
+  background: #fafafa;
+}
+
+.jumia-chevron {
+  color: #6b7280;
+  transition: transform 0.15s ease;
+}
+
+.jumia-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
+  min-width: 230px;
+  padding: 12px;
+  z-index: 150;
+  animation: jumia-fade-in 0.15s ease;
+}
+
+@keyframes jumia-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.jumia-menu-user-info {
+  padding: 6px 8px 10px;
+}
+
+.jumia-user-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #111827;
+}
+
+.jumia-user-email {
+  font-size: 0.8rem;
+}
+
+.jumia-menu-auth-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 6px;
+}
+
+.jumia-menu-divider {
+  height: 1px;
+  background: #f1f1f2;
+  margin: 8px 0;
+}
+
+.jumia-menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.jumia-menu-list li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: #374151;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.jumia-menu-list li a:hover {
+  background: #f9fafb;
+  color: #f68b1e;
+}
+
+.jumia-menu-logout-btn {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: #dc2626;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.jumia-menu-logout-btn:hover {
+  background: #fef2f2;
+}
+
+.jumia-help-contact-box {
+  padding: 8px;
+}
+
+.jumia-help-phone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #111827;
+  font-size: 0.85rem;
+}
+
+.jumia-help-phone span {
+  display: block;
+  font-size: 0.72rem;
+  color: #6b7280;
+}
+
+.jumia-help-hours {
+  display: block;
+  font-size: 0.72rem;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+.jumia-cart-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #282828;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: background 0.15s ease;
+}
+
+.jumia-cart-btn:hover {
+  color: #f68b1e;
+  background: #fafafa;
+}
+
+.jumia-cart-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.jumia-cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #f68b1e;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  height: 18px;
+  min-width: 18px;
+  padding: 0 4px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.jumia-mobile-burger {
+  display: none;
+  background: none;
+  border: none;
+  padding: 6px;
+  color: #111827;
+  cursor: pointer;
+}
+
+/* ---------- 4. Horizontal Category Strip (Navbar) ---------- */
+.jumia-category-nav {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.jumia-category-inner {
+  padding: 0 20px;
+}
+
+.jumia-category-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.jumia-category-list::-webkit-scrollbar {
+  display: none;
+}
+
+.jumia-category-item {
+  flex-shrink: 0;
+}
+
+.jumia-category-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #374151;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.jumia-category-btn:hover {
+  color: #f68b1e;
+  background: #fff8f0;
+}
+
+.jumia-category-btn-active {
+  color: #f68b1e;
+  background: #fff8f0;
+  font-weight: 700;
+}
+
+.jumia-cat-icon {
+  display: flex;
+  align-items: center;
+  color: inherit;
+}
+
+/* Mobile Drawer */
+.jumia-mobile-drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 2px solid #e5e7eb;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  max-height: 80vh;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.jumia-mobile-drawer-inner {
+  padding: 16px 20px 24px;
+}
+
+.jumia-search-mobile {
+  max-width: 100%;
+  margin-bottom: 16px;
+}
+
+.jumia-drawer-account {
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f1f2;
+}
+
+.jumia-drawer-auth-row {
+  display: flex;
+  gap: 10px;
+}
+
+.jumia-drawer-user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jumia-drawer-section {
+  padding: 14px 0 6px;
+}
+
+.jumia-drawer-section h4 {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 8px;
+}
+
+.jumia-drawer-cat-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.jumia-drawer-cat-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #1f2937;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.jumia-drawer-cat-btn:hover {
+  background: #fff8f0;
+  color: #f68b1e;
+}
+
+.jumia-drawer-help {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.jumia-drawer-call {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #111827;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ---------- 5. Hero Carousel Section ---------- */
+.hero-slider-section {
+  margin-bottom: 24px;
+}
+
+.hero-slider-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  min-height: 340px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+/* Hero color themes */
+.hero-theme-blue {
+  background: linear-gradient(110deg, #004ecc 0%, #0066ff 40%, #1e88e5 80%, #64b5f6 100%);
+  color: #ffffff;
+}
+
+.hero-theme-orange {
+  background: linear-gradient(110deg, #b93800 0%, #ea580c 45%, #f97316 80%, #fb923c 100%);
+  color: #ffffff;
+}
+
+.hero-theme-dark {
+  background: linear-gradient(110deg, #090d16 0%, #111827 45%, #1e293b 80%, #334155 100%);
+  color: #ffffff;
+}
+
+.hero-theme-purple {
+  background: linear-gradient(110deg, #4c1d95 0%, #6d28d9 45%, #8b5cf6 80%, #a78bfa 100%);
+  color: #ffffff;
+}
+
+.hero-theme-green {
+  background: linear-gradient(110deg, #064e3b 0%, #047857 45%, #10b981 80%, #34d399 100%);
+  color: #ffffff;
+}
+
+/* Spiral notebook decor (Back to School theme detail) */
+.hero-notebook-decor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 56%;
+  width: 28px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.hero-spiral-dots {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+.hero-spiral-ring {
+  width: 14px;
+  height: 6px;
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.hero-slide-body {
+  flex: 1.2;
+  padding: 36px 44px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-slide-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.hero-badge-star {
+  font-size: 0.95rem;
+  color: #facc15;
+}
+
+.hero-slide-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+  margin-bottom: 10px;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+}
+
+.hero-slide-sub {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+  color: #ffffff;
+  opacity: 0.95;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.hero-slide-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-slide-btn {
+  background: #ffffff;
+  color: #111827;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hero-slide-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.hero-slide-disclaimer {
+  font-size: 0.78rem;
+  opacity: 0.85;
+  font-weight: 500;
+}
+
+.hero-slide-media {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px 16px 0;
+  z-index: 2;
+  height: 100%;
+}
+
+.hero-slide-img {
+  max-height: 320px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.25));
+}
+
+.hero-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: #111827;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.15s ease;
+}
+
+.hero-nav-arrow:hover {
+  background: #ffffff;
+  transform: translateY(-50%) scale(1.08);
+}
+
+.hero-nav-prev {
+  left: 14px;
+}
+
+.hero-nav-next {
+  right: 14px;
+}
+
+.hero-slider-pagination {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+.hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.45);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.hero-dot-active {
+  width: 26px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- 6. Admin Control Center Tabs & Components ---------- */
+.admin-container {
+  padding-bottom: 60px;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.admin-tab {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  color: #4b5563;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.admin-tab:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.admin-tab.active {
+  background: #f68b1e;
+  border-color: #f68b1e;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(246, 139, 30, 0.25);
+}
+
+.admin-panel-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.admin-preview-section {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.admin-preview-section h4 {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+
+.admin-slides-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.admin-slide-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-slide-card.inactive {
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.admin-slide-thumb {
+  position: relative;
+  height: 140px;
+  background: #1e293b;
+  overflow: hidden;
+}
+
+.admin-slide-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-slide-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.admin-slide-tag.theme-blue {
+  background: #0062ff;
+}
+
+.admin-slide-tag.theme-orange {
+  background: #ea580c;
+}
+
+.admin-slide-tag.theme-dark {
+  background: #1e293b;
+}
+
+.admin-slide-tag.theme-purple {
+  background: #7e22ce;
+}
+
+.admin-slide-tag.theme-green {
+  background: #059669;
+}
+
+.admin-slide-info {
+  padding: 14px;
+  flex: 1;
+}
+
+.admin-slide-info h4 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.admin-slide-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.76rem;
+  color: #6b7280;
+  margin-top: 8px;
+}
+
+.admin-slide-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: #f9fafb;
+  border-top: 1px solid #f1f1f2;
+}
+
+.admin-slide-form {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+}
+
+.admin-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.admin-category-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-category-icon-box {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #fff8f0;
+  color: #f68b1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-category-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-category-details strong {
+  font-size: 0.92rem;
+}
+
+.admin-category-details .muted {
+  font-size: 0.78rem;
+}
+
+.admin-category-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 0.92rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #f68b1e;
+  cursor: pointer;
+}
+
+/* ---------- 7. Responsive Breakpoints ---------- */
+@media (max-width: 900px) {
+  .hero-slider-card {
+    flex-direction: column;
+    min-height: auto;
+    padding-bottom: 30px;
+  }
+
+  .hero-slide-body {
+    padding: 28px 24px 16px;
+    max-width: 100%;
+  }
+
+  .hero-slide-title {
+    font-size: 1.85rem;
+  }
+
+  .hero-slide-media {
+    padding: 0 20px 20px;
+  }
+
+  .hero-slide-img {
+    max-height: 220px;
+  }
+
+  .hero-notebook-decor {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .jumia-header-main-inner {
+    padding: 10px 14px;
+    gap: 12px;
+  }
+
+  .jumia-search-bar {
+    display: none;
+  }
+
+  .jumia-mobile-burger {
+    display: flex;
+  }
+
+  .jumia-action-dropdown-wrap {
+    display: none;
+  }
+
+  .top-promo-banner-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .top-promo-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sub-header-strip {
+    display: none;
+  }
+}

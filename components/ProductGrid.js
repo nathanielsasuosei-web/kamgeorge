@@ -1,23 +1,33 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { categories } from "@/lib/products";
+import { categories as defaultCategories } from "@/lib/products";
+import { useSettings } from "@/components/SettingsContext";
 import { SHOP_SEARCH_EVENT } from "@/lib/shopSearch";
 import { useProducts } from "@/components/ProductsContext";
 import ProductCard from "@/components/ProductCard";
 
-// The header drives this grid two ways: deep links (/?q=… / ?c=…#products)
-// read on mount, and an in-page event when the header acts while already here.
 export default function ProductGrid() {
   const { products: allProducts } = useProducts();
+  const { settings } = useSettings();
   const [category, setCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("featured");
 
+  const categoriesList = useMemo(() => {
+    if (settings?.categories && settings.categories.length > 0) {
+      return settings.categories.map((c) => c.name || c.label);
+    }
+    return defaultCategories;
+  }, [settings?.categories]);
+
   useEffect(() => {
     const apply = ({ q = "", c = "" } = {}) => {
-      if (categories.includes(c)) setCategory(c);
-      else if (!c) setCategory("All");
+      if (c && c !== "All" && c !== "Official Stores") {
+        setCategory(c);
+      } else {
+        setCategory("All");
+      }
       setQuery(q);
     };
 
@@ -39,16 +49,24 @@ export default function ProductGrid() {
 
   const filtered = useMemo(() => {
     let list = [...allProducts];
-    if (category !== "All") {
-      list = list.filter((p) => p.category === category);
+    if (category !== "All" && category !== "Official Stores") {
+      const catLower = category.toLowerCase();
+      list = list.filter((p) => {
+        const pCat = (p.category || "").toLowerCase();
+        return (
+          pCat === catLower ||
+          catLower.includes(pCat) ||
+          pCat.includes(catLower)
+        );
+      });
     }
     const q = query.trim().toLowerCase();
     if (q) {
       list = list.filter(
         (p) =>
           p.name.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q)
+          (p.description && p.description.toLowerCase().includes(q)) ||
+          (p.category && p.category.toLowerCase().includes(q))
       );
     }
     switch (sort) {
@@ -71,15 +89,16 @@ export default function ProductGrid() {
     <section id="products" className="section">
       <div className="section-head">
         <div>
-          <h2>Shop products</h2>
+          <h2>Shop Products</h2>
           <p className="muted">
             {filtered.length} item{filtered.length === 1 ? "" : "s"}
+            {category !== "All" ? ` in ${category}` : ""}
           </p>
         </div>
         <div className="toolbar">
           <input
             type="search"
-            placeholder="Search products…"
+            placeholder="Search in products…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="input"
@@ -99,11 +118,15 @@ export default function ProductGrid() {
       </div>
 
       <div className="chips">
-        {categories.map((c) => (
+        {categoriesList.map((c) => (
           <button
             key={c}
-            className={c === category ? "chip chip-active" : "chip"}
-            onClick={() => setCategory(c)}
+            className={
+              c === category || (c === "Official Stores" && category === "All")
+                ? "chip chip-active"
+                : "chip"
+            }
+            onClick={() => setCategory(c === "Official Stores" ? "All" : c)}
           >
             {c}
           </button>
@@ -112,7 +135,7 @@ export default function ProductGrid() {
 
       {filtered.length === 0 ? (
         <div className="empty">
-          <p>No products match your search.</p>
+          <p>No products match your search or selected category.</p>
           <button
             className="btn btn-secondary"
             onClick={() => {

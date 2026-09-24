@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LockIcon, MobileIcon, ReturnsIcon, TruckIcon } from "@/components/icons";
+import { LockIcon } from "@/components/icons";
 import { useSettings } from "@/components/SettingsContext";
 
 // Make bare email addresses clickable (e.g. hello@kamgeorge.com).
@@ -62,31 +62,6 @@ export default function Footer() {
         <Link href="/admin/login" className="footer-admin">
           <LockIcon size={13} /> Store manager
         </Link>
-      </div>
-      <div className="trust-strip">
-        <div className="container trust-strip-inner">
-          <div className="trust-item">
-            <TruckIcon size={22} />
-            <div>
-              <strong>Fast delivery</strong>
-              <span>1–3 days nationwide with live order updates.</span>
-            </div>
-          </div>
-          <div className="trust-item">
-            <MobileIcon size={22} />
-            <div>
-              <strong>MoMo payments</strong>
-              <span>Fast, secure Mobile Money checkout.</span>
-            </div>
-          </div>
-          <div className="trust-item">
-            <ReturnsIcon size={22} />
-            <div>
-              <strong>Easy returns</strong>
-              <span>7-day no-questions returns on every order.</span>
-            </div>
-          </div>
-        </div>
       </div>
     </footer>
   );

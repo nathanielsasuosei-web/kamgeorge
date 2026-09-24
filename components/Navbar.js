@@ -1,57 +1,79 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCart } from "@/components/CartContext";
 import { useAuth } from "@/components/AuthContext";
-import { categories } from "@/lib/products";
+import { useSettings } from "@/components/SettingsContext";
 import { SHOP_SEARCH_EVENT } from "@/lib/shopSearch";
+import TopPromoBanner from "@/components/TopPromoBanner";
+import SubHeader from "@/components/SubHeader";
 import {
   CartIcon,
+  ChevronDownIcon,
+  HelpIcon,
+  LockIcon,
   MenuIcon,
   PhoneIcon,
+  RenderCategoryIcon,
   SearchIcon,
-  TruckIcon,
+  StarBadgeIcon,
   UserIcon,
   XIcon,
 } from "@/components/icons";
 
-// Anchor into the product grid on the home page
-const categoryHref = (category) =>
-  category === "All"
-    ? "/#products"
-    : `/?c=${encodeURIComponent(category)}#products`;
-
 export default function Navbar() {
   const { count } = useCart();
   const { user, loaded, logout } = useAuth();
+  const { settings } = useSettings();
   const pathname = usePathname();
   const router = useRouter();
 
   const [term, setTerm] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("All");
 
-  // Close the mobile drawer on navigation and keep the search box in sync
-  // with the grid's filters (which live in the URL).
+  const accountRef = useRef(null);
+  const helpRef = useRef(null);
+
+  const categories = settings.categories || [];
+  const helpInfo = settings.helpInfo || {};
+
+  // Close menus on outside click or navigation
   useEffect(() => {
     setMenuOpen(false);
+    setAccountOpen(false);
+    setHelpOpen(false);
     const params = new URLSearchParams(window.location.search);
     setTerm(params.get("q") || "");
+    setActiveCategory(params.get("c") || "All");
   }, [pathname]);
 
-  const linkClass = (href) =>
-    pathname === href ? "nav-link nav-link-active" : "nav-link";
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (accountRef.current && !accountRef.current.contains(e.target)) {
+        setAccountOpen(false);
+      }
+      if (helpRef.current && !helpRef.current.contains(e.target)) {
+        setHelpOpen(false);
+      }
+    };
+    document.addEventListener("click", handleOutsideClick);
+    return () => document.removeEventListener("click", handleOutsideClick);
+  }, []);
 
   const handleLogout = () => {
     logout();
     setMenuOpen(false);
-    if (pathname === "/account" || pathname.startsWith("/admin"))
+    setAccountOpen(false);
+    if (pathname === "/account" || pathname.startsWith("/admin")) {
       router.push("/");
+    }
   };
 
-  // Deep-link the grid (?q= / ?c=) and, when we are already on the home
-  // page, tell the grid directly so it filters without a reload.
   const goToProducts = (params = {}) => {
     const search = new URLSearchParams(params).toString();
     router.push(search ? `/?${search}#products` : "/#products");
@@ -60,6 +82,9 @@ export default function Navbar() {
         new CustomEvent(SHOP_SEARCH_EVENT, { detail: params })
       );
       setTerm(params.q || "");
+      if (params.c) setActiveCategory(params.c);
+      else if (!params.q && !params.c) setActiveCategory("All");
+
       requestAnimationFrame(() => {
         document
           .getElementById("products")
@@ -69,230 +94,392 @@ export default function Navbar() {
     setMenuOpen(false);
   };
 
-  const submitSearch = (event) => {
-    event.preventDefault();
+  const submitSearch = (e) => {
+    e.preventDefault();
     const q = term.trim();
     goToProducts(q ? { q } : {});
   };
 
-  // Category links keep their href so they stay shareable — on the home page
-  // we intercept the click and filter the grid in place.
-  const onCategoryClick = (category) => (event) => {
-    if (pathname !== "/") return;
-    event.preventDefault();
-    goToProducts(category === "All" ? {} : { c: category });
+  const onCategoryClick = (catName) => (e) => {
+    e.preventDefault();
+    setActiveCategory(catName);
+    if (catName === "All" || catName === "Official Stores") {
+      goToProducts({});
+    } else {
+      goToProducts({ c: catName });
+    }
   };
 
   const firstName = user ? user.name.split(" ")[0] : "";
   const accountHref = user
-    ? user.role === "customer"
-      ? "/account"
-      : "/admin"
+    ? user.role === "manager"
+      ? "/admin"
+      : "/account"
     : "/login";
-
-  const searchForm = (extraClass) => (
-    <form
-      className={`header-search ${extraClass || ""}`}
-      role="search"
-      onSubmit={submitSearch}
-    >
-      <SearchIcon size={18} className="header-search-icon" />
-      <input
-        type="search"
-        value={term}
-        onChange={(e) => setTerm(e.target.value)}
-        placeholder="Search headphones, sneakers, perfume…"
-        aria-label="Search products"
-      />
-      <button type="submit" className="header-search-btn">
-        Search
-      </button>
-    </form>
-  );
 
   return (
     <>
-      {/* ---------- Announcement strip (scrolls away with the page) ---------- */}
-      <div className="header-top">
-        <div className="container header-top-inner">
-          <span className="header-top-msg">
-            <TruckIcon size={15} />
-            Free delivery in Accra on orders over GH₵500 · Pay with Mobile Money
-          </span>
-          <div className="header-top-links">
-            <span className="header-top-item">
-              <PhoneIcon size={14} />
-              030 000 0000
-            </span>
-            {loaded && user ? (
-              <>
-                <Link href={accountHref} className="header-top-item">
-                  <UserIcon size={14} />
-                  Hi, {firstName}
-                </Link>
-                <button className="header-top-btn" onClick={handleLogout}>
-                  Log out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login" className="header-top-item">
-                  Sign in
-                </Link>
-                <Link href="/register" className="header-top-item">
-                  Create account
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+      {/* 1. Top Announcement / Promotional Banner */}
+      <TopPromoBanner />
 
-      {/* ---------- Sticky header: main bar + category nav ---------- */}
-      <header className="site-header">
-        <div className="header-main">
-          <div className="container header-main-inner">
-            <Link href="/" className="header-brand">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="header-logo"
-                src="https://i.imgur.com/RsY4DbC_d.webp"
-                alt="KamGeorge logo"
-              />
-              <span className="header-brand-text">
-                <span className="header-brand-name">KamGeorge</span>
-                <span className="header-brand-tag">
-                  Quality essentials · Ghana
-                </span>
-              </span>
+      {/* 2. Sub-top Utility bar (Sell on store + brand ecosystems) */}
+      <SubHeader />
+
+      {/* 3. Main Header & Category Navigation */}
+      <header className="site-header-jumia">
+        <div className="jumia-header-main">
+          <div className="container jumia-header-main-inner">
+            {/* Logo */}
+            <Link href="/" className="jumia-logo-wrap">
+              <span className="jumia-logo-text">KAMGEORGE</span>
+              <StarBadgeIcon size={18} className="jumia-logo-star" />
             </Link>
 
-            {searchForm("header-search-desktop")}
+            {/* Central Search Bar */}
+            <form
+              className="jumia-search-bar"
+              role="search"
+              onSubmit={submitSearch}
+            >
+              <div className="jumia-search-input-wrap">
+                <SearchIcon size={19} className="jumia-search-icon" />
+                <input
+                  type="search"
+                  value={term}
+                  onChange={(e) => setTerm(e.target.value)}
+                  placeholder="Search products, brands and categories"
+                  aria-label="Search products, brands and categories"
+                  className="jumia-search-input"
+                />
+              </div>
+              <button type="submit" className="jumia-search-btn">
+                Search
+              </button>
+            </form>
 
-            <div className="header-actions">
-              <Link href={accountHref} className="header-action">
-                <UserIcon size={20} />
-                <span className="header-action-label">
-                  {loaded && user ? `Hi, ${firstName}` : "Account"}
-                  <small>
-                    {loaded && user ? "My purchases" : "Sign in / Register"}
-                  </small>
-                </span>
-              </Link>
+            {/* Right Action Icons */}
+            <div className="jumia-header-actions">
+              {/* Account Dropdown */}
+              <div
+                className="jumia-action-dropdown-wrap"
+                ref={accountRef}
+                onMouseEnter={() => setAccountOpen(true)}
+                onMouseLeave={() => setAccountOpen(false)}
+              >
+                <button
+                  type="button"
+                  className="jumia-header-action-btn"
+                  onClick={() => setAccountOpen((o) => !o)}
+                  aria-expanded={accountOpen}
+                >
+                  <UserIcon size={21} />
+                  <span className="jumia-action-title">
+                    {loaded && user ? `Hi, ${firstName}` : "Account"}
+                  </span>
+                  <ChevronDownIcon size={14} className="jumia-chevron" />
+                </button>
 
-              <Link href="/cart" className="header-action">
-                <span className="header-cart-icon">
-                  <CartIcon size={20} />
+                {accountOpen && (
+                  <div className="jumia-dropdown-menu jumia-account-menu">
+                    {loaded && user ? (
+                      <div className="jumia-menu-user-info">
+                        <p className="jumia-user-name">{user.name}</p>
+                        <p className="jumia-user-email muted">
+                          {user.email || user.phone}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="jumia-menu-auth-btns">
+                        <Link
+                          href="/login"
+                          className="btn btn-primary btn-block"
+                          onClick={() => setAccountOpen(false)}
+                        >
+                          Sign In
+                        </Link>
+                        <Link
+                          href="/register"
+                          className="btn btn-secondary btn-block"
+                          onClick={() => setAccountOpen(false)}
+                        >
+                          Create Account
+                        </Link>
+                      </div>
+                    )}
+
+                    <div className="jumia-menu-divider" />
+
+                    <ul className="jumia-menu-list">
+                      {loaded && user && (
+                        <li>
+                          <Link
+                            href={accountHref}
+                            onClick={() => setAccountOpen(false)}
+                          >
+                            <UserIcon size={16} />
+                            {user.role === "manager"
+                              ? "Store Manager Dashboard"
+                              : "My Account"}
+                          </Link>
+                        </li>
+                      )}
+                      <li>
+                        <Link
+                          href={loaded && user ? "/account" : "/login"}
+                          onClick={() => setAccountOpen(false)}
+                        >
+                          <CartIcon size={16} />
+                          Orders &amp; Purchases
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/cart" onClick={() => setAccountOpen(false)}>
+                          <CartIcon size={16} />
+                          Your Cart ({count})
+                        </Link>
+                      </li>
+                      {(!user || user.role !== "manager") && (
+                        <li>
+                          <Link
+                            href="/admin/login"
+                            onClick={() => setAccountOpen(false)}
+                          >
+                            <LockIcon size={16} />
+                            Store Manager
+                          </Link>
+                        </li>
+                      )}
+                    </ul>
+
+                    {loaded && user && (
+                      <>
+                        <div className="jumia-menu-divider" />
+                        <button
+                          type="button"
+                          className="jumia-menu-logout-btn"
+                          onClick={handleLogout}
+                        >
+                          Log Out
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Help Dropdown */}
+              <div
+                className="jumia-action-dropdown-wrap"
+                ref={helpRef}
+                onMouseEnter={() => setHelpOpen(true)}
+                onMouseLeave={() => setHelpOpen(false)}
+              >
+                <button
+                  type="button"
+                  className="jumia-header-action-btn"
+                  onClick={() => setHelpOpen((o) => !o)}
+                  aria-expanded={helpOpen}
+                >
+                  <HelpIcon size={21} />
+                  <span className="jumia-action-title">Help</span>
+                  <ChevronDownIcon size={14} className="jumia-chevron" />
+                </button>
+
+                {helpOpen && (
+                  <div className="jumia-dropdown-menu jumia-help-menu">
+                    <ul className="jumia-menu-list">
+                      <li>
+                        <Link href="/#products" onClick={() => setHelpOpen(false)}>
+                          <HelpIcon size={16} />
+                          Help Center &amp; FAQs
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/cart" onClick={() => setHelpOpen(false)}>
+                          <CartIcon size={16} />
+                          Place an Order
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/checkout" onClick={() => setHelpOpen(false)}>
+                          <StarBadgeIcon size={16} />
+                          Payment Options (MoMo &amp; Card)
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href="/account" onClick={() => setHelpOpen(false)}>
+                          <UserIcon size={16} />
+                          Track Order &amp; Delivery
+                        </Link>
+                      </li>
+                    </ul>
+
+                    <div className="jumia-menu-divider" />
+
+                    <div className="jumia-help-contact-box">
+                      <div className="jumia-help-phone">
+                        <PhoneIcon size={16} />
+                        <div>
+                          <span>Call Center</span>
+                          <strong>{helpInfo.phone || "030 274 0642"}</strong>
+                        </div>
+                      </div>
+                      <span className="jumia-help-hours">
+                        {helpInfo.hours || "Mon - Sun: 8am - 8pm"}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Cart Button */}
+              <Link href="/cart" className="jumia-cart-btn">
+                <div className="jumia-cart-icon-wrap">
+                  <CartIcon size={22} />
                   {count > 0 && (
-                    <span className="header-cart-badge">{count}</span>
+                    <span className="jumia-cart-badge">{count}</span>
                   )}
-                </span>
-                <span className="header-action-label">
-                  Cart
-                  <small>
-                    {count > 0 ? `${count} item${count === 1 ? "" : "s"}` : "Empty"}
-                  </small>
-                </span>
+                </div>
+                <span className="jumia-action-title">Cart</span>
               </Link>
 
-              <Link href="/checkout" className="header-cta">
-                Checkout
-              </Link>
-
+              {/* Mobile Menu Burger */}
               <button
-                className="header-burger"
-                onClick={() => setMenuOpen((open) => !open)}
-                aria-expanded={menuOpen}
+                type="button"
+                className="jumia-mobile-burger"
+                onClick={() => setMenuOpen((o) => !o)}
                 aria-label={menuOpen ? "Close menu" : "Open menu"}
               >
-                {menuOpen ? <XIcon size={22} /> : <MenuIcon size={22} />}
+                {menuOpen ? <XIcon size={24} /> : <MenuIcon size={24} />}
               </button>
             </div>
           </div>
         </div>
 
-        <nav className="header-nav" aria-label="Product categories">
-          <div className="container header-nav-inner">
-            <ul className="header-nav-list">
-              <li>
-                <Link
-                  href="/#products"
-                  className="header-nav-link header-nav-link-strong"
-                  onClick={onCategoryClick("All")}
-                >
-                  Shop all
-                </Link>
-              </li>
-              {categories
-                .filter((c) => c !== "All")
-                .map((c) => (
-                  <li key={c}>
-                    <Link
-                      href={categoryHref(c)}
-                      className="header-nav-link"
-                      onClick={onCategoryClick(c)}
+        {/* 4. Horizontal Category Strip with Icons */}
+        <nav className="jumia-category-nav" aria-label="Product categories">
+          <div className="container jumia-category-inner">
+            <ul className="jumia-category-list">
+              {categories.map((cat) => {
+                const isActive =
+                  (cat.name === "All" && activeCategory === "All") ||
+                  activeCategory === cat.name ||
+                  activeCategory === cat.label;
+
+                return (
+                  <li key={cat.id || cat.name} className="jumia-category-item">
+                    <button
+                      type="button"
+                      className={`jumia-category-btn ${
+                        isActive ? "jumia-category-btn-active" : ""
+                      }`}
+                      onClick={onCategoryClick(cat.name)}
                     >
-                      {c}
-                    </Link>
+                      <span className="jumia-cat-icon">
+                        <RenderCategoryIcon iconKey={cat.icon} size={18} />
+                      </span>
+                      <span className="jumia-cat-label">
+                        {cat.label || cat.name}
+                      </span>
+                    </button>
                   </li>
-                ))}
-              <li>
-                <Link href="/cart" className={linkClass("/cart")}>
-                  Cart
-                </Link>
-              </li>
-              <li>
-                <Link href="/account" className={linkClass("/account")}>
-                  My purchases
-                </Link>
-              </li>
+                );
+              })}
             </ul>
-            <span className="header-nav-note">
-              MoMo · Card · Fast nationwide delivery
-            </span>
           </div>
         </nav>
 
-        {/* ---------- Mobile drawer ---------- */}
+        {/* 5. Mobile Drawer */}
         {menuOpen && (
-          <div className="header-drawer">
-            <div className="container">
-              {searchForm("header-search-mobile")}
-              <ul className="header-drawer-list">
-                <li>
-                  <Link href="/" onClick={onCategoryClick("All")}>
-                    Shop all
-                  </Link>
-                </li>
-                {categories
-                  .filter((c) => c !== "All")
-                  .map((c) => (
-                    <li key={c}>
-                      <Link href={categoryHref(c)} onClick={onCategoryClick(c)}>
-                        {c}
-                      </Link>
+          <div className="jumia-mobile-drawer">
+            <div className="container jumia-mobile-drawer-inner">
+              {/* Mobile Search */}
+              <form
+                className="jumia-search-bar jumia-search-mobile"
+                onSubmit={submitSearch}
+              >
+                <div className="jumia-search-input-wrap">
+                  <SearchIcon size={18} className="jumia-search-icon" />
+                  <input
+                    type="search"
+                    value={term}
+                    onChange={(e) => setTerm(e.target.value)}
+                    placeholder="Search products…"
+                    className="jumia-search-input"
+                  />
+                </div>
+                <button type="submit" className="jumia-search-btn">
+                  Search
+                </button>
+              </form>
+
+              {/* Account Quick Status */}
+              <div className="jumia-drawer-account">
+                {loaded && user ? (
+                  <div className="jumia-drawer-user">
+                    <span>Signed in as <strong>{user.name}</strong></span>
+                    <Link
+                      href={accountHref}
+                      className="btn btn-secondary btn-sm"
+                    >
+                      Dashboard
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="jumia-drawer-auth-row">
+                    <Link href="/login" className="btn btn-primary btn-sm">
+                      Sign In
+                    </Link>
+                    <Link href="/register" className="btn btn-secondary btn-sm">
+                      Register
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Categories list with icons */}
+              <div className="jumia-drawer-section">
+                <h4>All Categories</h4>
+                <ul className="jumia-drawer-cat-list">
+                  {categories.map((cat) => (
+                    <li key={cat.id || cat.name}>
+                      <button
+                        type="button"
+                        className="jumia-drawer-cat-btn"
+                        onClick={onCategoryClick(cat.name)}
+                      >
+                        <span className="jumia-cat-icon">
+                          <RenderCategoryIcon iconKey={cat.icon} size={18} />
+                        </span>
+                        <span>{cat.label || cat.name}</span>
+                      </button>
                     </li>
                   ))}
-                <li>
-                  <Link href="/cart">Cart {count > 0 ? `(${count})` : ""}</Link>
-                </li>
-                <li>
-                  <Link href={accountHref}>
-                    {loaded && user ? `Hi, ${firstName}` : "Login"}
+                </ul>
+              </div>
+
+              {/* Quick links */}
+              <div className="jumia-drawer-section">
+                <h4>Customer Support</h4>
+                <div className="jumia-drawer-help">
+                  <a
+                    href={`tel:${(helpInfo.phone || "0302740642").replace(/\s+/g, "")}`}
+                    className="jumia-drawer-call"
+                  >
+                    <PhoneIcon size={16} />
+                    <span>Call to order: {helpInfo.phone || "030 274 0642"}</span>
+                  </a>
+                  <Link href="/cart">
+                    <CartIcon size={16} /> Cart ({count})
                   </Link>
-                </li>
-                {!(loaded && user) && (
-                  <li>
-                    <Link href="/register">Create account</Link>
-                  </li>
-                )}
-                <li>
-                  <Link href="/checkout">Checkout</Link>
-                </li>
-              </ul>
+                </div>
+              </div>
+
               {loaded && user && (
                 <button
+                  type="button"
                   className="btn btn-secondary btn-block"
+                  style={{ marginTop: 20 }}
                   onClick={handleLogout}
                 >
                   Log out
