@@ -17,7 +17,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState([
     {
       from: "bot",
-      text: "Hi there! I'm Little George, your KamGeorge shopping assistant.\nAsk me about products, prices, delivery, payments or tracking your order!",
+      text: "Hi there! I'm Little George, your Unclaim shopping assistant.\nAsk me about products, prices, delivery, payments or tracking your order!",
     },
   ]);
   const [input, setInput] = useState("");

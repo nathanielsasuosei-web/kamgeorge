@@ -8,7 +8,7 @@ import { useCart } from "@/components/CartContext";
 import { useAuth } from "@/components/AuthContext";
 import { Suspense } from "react";
 
-const PENDING_KEY = "kamgeorge-pending-order";
+const PENDING_KEY = "unclaim-pending-order";
 
 function CallbackInner() {
   const searchParams = useSearchParams();

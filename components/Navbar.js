@@ -151,10 +151,10 @@ export default function Navbar() {
               <img
                 className="header-logo"
                 src="https://i.imgur.com/RsY4DbC_d.webp"
-                alt="KamGeorge logo"
+                alt="Unclaim logo"
               />
               <span className="header-brand-text">
-                <span className="header-brand-name">KamGeorge</span>
+                <span className="header-brand-name">Unclaim</span>
                 <span className="header-brand-tag">
                   Quality essentials · Ghana
                 </span>

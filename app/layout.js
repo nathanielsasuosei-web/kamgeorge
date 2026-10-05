@@ -10,7 +10,7 @@ import ChatWidget from "@/components/ChatWidget";
 import ThemeFab from "@/components/ThemeFab";
 
 export const metadata = {
-  title: "KamGeorge — Quality essentials delivered in Ghana",
+  title: "Unclaim — Quality essentials delivered in Ghana",
   description:
     "Shop electronics, fashion, home and beauty. Fast delivery across Ghana, Mobile Money accepted.",
   icons: {
@@ -20,7 +20,7 @@ export const metadata = {
 };
 
 // Applies the saved background theme before first paint (avoids a flash)
-const themeInitScript = `(function(){try{var t=localStorage.getItem('kamgeorge-theme');if(t){document.documentElement.dataset.theme=t;}}catch(e){}})();`;
+const themeInitScript = `(function(){try{var t=localStorage.getItem('unclaim-theme');if(t){document.documentElement.dataset.theme=t;}}catch(e){}})();`;
 
 export default function RootLayout({ children }) {
   return (

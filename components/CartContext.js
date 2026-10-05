@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useProducts } from "@/components/ProductsContext";
 
 const CartContext = createContext(null);
-const STORAGE_KEY = "kamgeorge-cart";
+const STORAGE_KEY = "unclaim-cart";
 
 export function CartProvider({ children }) {
   const { getProduct } = useProducts();

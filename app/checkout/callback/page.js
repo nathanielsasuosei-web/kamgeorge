@@ -1,7 +1,7 @@
 import PaystackCallback from "@/components/PaystackCallback";
 
 export const metadata = {
-  title: "Payment — KamGeorge",
+  title: "Payment — Unclaim",
 };
 
 export default function CheckoutCallbackPage() {

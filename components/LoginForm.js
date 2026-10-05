@@ -106,8 +106,8 @@ export default function LoginForm() {
         <div className="auth-panel">
           <div className="brand brand-light">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="brand-logo" src="https://i.imgur.com/RsY4DbC_d.webp" alt="KamGeorge logo" />
-            <span className="brand-name">KamGeorge</span>
+            <img className="brand-logo" src="https://i.imgur.com/RsY4DbC_d.webp" alt="Unclaim logo" />
+            <span className="brand-name">Unclaim</span>
           </div>
           <h2>Welcome back</h2>
           <p>Log in for faster checkout and full order tracking.</p>

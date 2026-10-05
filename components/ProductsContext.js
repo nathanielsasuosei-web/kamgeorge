@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { products as defaultProducts } from "@/lib/products";
 
 const ProductsContext = createContext(null);
-const STORAGE_KEY = "kamgeorge-product-overrides";
+const STORAGE_KEY = "unclaim-product-overrides";
 
 const EMPTY_OVERRIDES = { updated: {}, deleted: [], added: [] };
 

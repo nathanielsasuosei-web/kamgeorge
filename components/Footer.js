@@ -4,7 +4,7 @@ import Link from "next/link";
 import { LockIcon, MobileIcon, ReturnsIcon, TruckIcon } from "@/components/icons";
 import { useSettings } from "@/components/SettingsContext";
 
-// Make bare email addresses clickable (e.g. hello@kamgeorge.com).
+// Make bare email addresses clickable (e.g. hello@unclaim.com).
 function SupportLine({ text }) {
   const emailMatch = text.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
   if (emailMatch) {
@@ -26,8 +26,8 @@ export default function Footer() {
         <div>
           <div className="brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="brand-logo" src="https://i.imgur.com/RsY4DbC_d.webp" alt="KamGeorge logo" />
-            <span className="brand-name">KamGeorge</span>
+            <img className="brand-logo" src="https://i.imgur.com/RsY4DbC_d.webp" alt="Unclaim logo" />
+            <span className="brand-name">Unclaim</span>
           </div>
           <p className="footer-tag">
             Quality essentials delivered across Ghana. Shop electronics,
@@ -58,7 +58,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="container footer-bottom">
-        <span>© {new Date().getFullYear()} KamGeorge. All rights reserved.</span>
+        <span>© {new Date().getFullYear()} Unclaim. All rights reserved.</span>
         <Link href="/admin/login" className="footer-admin">
           <LockIcon size={13} /> Store manager
         </Link>

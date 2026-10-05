@@ -1,7 +1,7 @@
 import ManagerLoginForm from "@/components/ManagerLoginForm";
 
 export const metadata = {
-  title: "Store manager login — KamGeorge",
+  title: "Store manager login — Unclaim",
 };
 
 export default function ManagerLoginPage() {
