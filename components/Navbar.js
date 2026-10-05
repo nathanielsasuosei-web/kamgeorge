@@ -150,7 +150,7 @@ export default function Navbar() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="header-logo"
-                src="https://i.imgur.com/RsY4DbC_d.webp"
+                src="/logo.png"
                 alt="Unclaim logo"
               />
               <span className="header-brand-text">

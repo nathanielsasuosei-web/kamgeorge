@@ -26,7 +26,7 @@ export default function Footer() {
         <div>
           <div className="brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="brand-logo" src="https://i.imgur.com/RsY4DbC_d.webp" alt="Unclaim logo" />
+            <img className="brand-logo" src="/logo.png" alt="Unclaim logo" />
             <span className="brand-name">Unclaim</span>
           </div>
           <p className="footer-tag">
