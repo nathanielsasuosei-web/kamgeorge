@@ -14,8 +14,11 @@ export const metadata = {
   description:
     "Shop electronics, fashion, home and beauty. Fast delivery across Ghana, Mobile Money accepted.",
   icons: {
-    icon: "https://i.imgur.com/RsY4DbC_d.webp",
-    apple: "https://i.imgur.com/RsY4DbC_d.webp",
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 

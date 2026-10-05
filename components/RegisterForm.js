@@ -109,7 +109,7 @@ export default function RegisterForm() {
         <div className="auth-panel">
           <div className="brand brand-light">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="brand-logo" src="https://i.imgur.com/RsY4DbC_d.webp" alt="Unclaim logo" />
+            <img className="brand-logo" src="/logo.png" alt="Unclaim logo" />
             <span className="brand-name">Unclaim</span>
           </div>
           <h2>Join Unclaim</h2>
