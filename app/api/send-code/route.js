@@ -41,10 +41,10 @@ export async function POST(req) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: `KamGeorge <${from}>`,
+        from: `Unclaim <${from}>`,
         to: email,
-        subject: `Your KamGeorge verification code: ${code}`,
-        text: `Your KamGeorge verification code is ${code}. It expires in 5 minutes. If you didn't request it, ignore this email.`,
+        subject: `Your Unclaim verification code: ${code}`,
+        text: `Your Unclaim verification code is ${code}. It expires in 5 minutes. If you didn't request it, ignore this email.`,
         html: `<div style="font-family:sans-serif;max-width:480px"><h2>Your verification code</h2><p>Enter this code to verify your email:</p><p style="font-size:32px;font-weight:bold;letter-spacing:6px">${code}</p><p style="color:#666">It expires in 5 minutes. If you didn't request it, ignore this email.</p></div>`,
       }),
     });

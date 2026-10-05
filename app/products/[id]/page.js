@@ -7,9 +7,9 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }) {
   const product = getProduct(params.id);
-  if (!product) return { title: "Product not found — KamGeorge" };
+  if (!product) return { title: "Product not found — Unclaim" };
   return {
-    title: `${product.name} — KamGeorge`,
+    title: `${product.name} — Unclaim`,
     description: product.description,
   };
 }

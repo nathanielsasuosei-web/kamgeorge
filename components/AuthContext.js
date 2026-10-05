@@ -3,14 +3,14 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const AuthContext = createContext(null);
-const SESSION_KEY = "kamgeorge-auth";
-const CUSTOMERS_KEY = "kamgeorge-customers";
-const ADMIN_KEY = "kamgeorge-admin";
+const SESSION_KEY = "unclaim-auth";
+const CUSTOMERS_KEY = "unclaim-customers";
+const ADMIN_KEY = "unclaim-admin";
 
 // Default manager credentials — used until the manager changes them
 // from the dashboard (stored in localStorage, see changeManagerCredentials).
 export const DEMO_ADMIN = {
-  email: "admin@kamgeorge.com",
+  email: "admin@unclaim.com",
   password: "admin123",
   name: "Store Manager",
 };

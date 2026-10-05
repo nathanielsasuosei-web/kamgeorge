@@ -1,4 +1,4 @@
-# KamGeorge
+# Unclaim
 
 An e-commerce storefront built with **Next.js 14** (App Router) — deployed on **Vercel**.
 
@@ -32,7 +32,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-Demo manager login: `admin@kamgeorge.com` / `admin123` (via the Store manager link in the footer). The manager can change this email and password from the dashboard after logging in.
+Demo manager login: `admin@unclaim.com` / `admin123` (via the Store manager link in the footer). The manager can change this email and password from the dashboard after logging in.
 
 ## Build & deploy
 
@@ -66,7 +66,7 @@ Push to `main` and Vercel will build & deploy automatically (framework preset: *
   is a small **Store manager** link in the footer, at the very bottom of
   every page.
 - Managers log in at `/admin/login` with the demo credentials:
-  - email: `admin@kamgeorge.com`
+  - email: `admin@unclaim.com`
   - password: `admin123`
 - After login, `/admin` opens the dashboard: add / edit / delete products
   (with photo upload or image URL), reset the catalog. Visiting `/admin`
@@ -100,7 +100,7 @@ screen instead of being emailed. To send real emails via
      delivers to your own account email only.
    - **Real customers**: verify your domain (Resend → Domains → Add domain →
      add the DNS records at your registrar), then use an address on it,
-     e.g. `hello@kamgeorge.com`.
+     e.g. `hello@unclaim.com`.
 3. Tell the app about it:
    - Locally: copy `.env.example` to `.env.local` and fill in
      `RESEND_API_KEY` and `EMAIL_FROM`, then restart the server.

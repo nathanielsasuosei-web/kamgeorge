@@ -13,7 +13,7 @@ export const THEMES = [
 ];
 
 const ThemeContext = createContext(null);
-const STORAGE_KEY = "kamgeorge-theme";
+const STORAGE_KEY = "unclaim-theme";
 
 export function ThemeProvider({ children }) {
   const [theme, setThemeState] = useState("white");

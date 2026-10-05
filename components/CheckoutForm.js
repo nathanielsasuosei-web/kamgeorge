@@ -7,7 +7,7 @@ import { useCart } from "@/components/CartContext";
 import { useAuth } from "@/components/AuthContext";
 
 const DELIVERY_FEE = 50;
-const PENDING_KEY = "kamgeorge-pending-order";
+const PENDING_KEY = "unclaim-pending-order";
 
 export default function CheckoutForm() {
   const { items, subtotal, clear, loaded } = useCart();
